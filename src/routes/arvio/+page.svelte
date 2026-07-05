@@ -18,7 +18,7 @@
 	<title>
 		{verdict.deltaPct === null
 			? 'Ei vertailuarvoa'
-			: `${verdict.deltaPct > 0 ? '+' : ''}${verdict.deltaPct} % vs alue`} — RehtiArvio by Fides
+			: `${verdict.deltaPct > 0 ? '+' : ''}${verdict.deltaPct} % vs alue`} | RehtiArvio by Fides
 	</title>
 </svelte:head>
 
@@ -53,7 +53,7 @@
 				{#if verdict.benchmarkEurM2}
 					{fmt.format(verdict.benchmarkEurM2)} <span class="unit">€/m²</span>
 				{:else}
-					<span class="dash">—</span>
+					<span class="dash">–</span>
 				{/if}
 			</dd>
 		</div>

@@ -4,7 +4,7 @@
 </script>
 
 <svelte:head>
-	<title>Hintakartta — RehtiArvio by Fides</title>
+	<title>Hintakartta | RehtiArvio by Fides</title>
 	<meta
 		name="description"
 		content="Koko Suomen toteutuneet kerrostaloasuntojen neliöhinnat postinumeroalueittain kartalla. Lähde: Tilastokeskus."

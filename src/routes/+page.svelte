@@ -5,15 +5,15 @@
 </script>
 
 <svelte:head>
-	<title>RehtiArvio — ilmoitusanalyysi ja markkinahintavertailu</title>
+	<title>RehtiArvio | Ilmoitusanalyysi ja markkinahintavertailu</title>
 </svelte:head>
 
 <section class="hero">
 	<span class="eyebrow">Ilmoitusanalyysi</span>
-	<h1>Analysoi myynti-ilmoitus — selvitä, onko pyyntihinta linjassa toteutuneiden kauppojen kanssa.</h1>
+	<h1>Analysoi myynti-ilmoitus ja selvitä, onko pyyntihinta linjassa toteutuneiden kauppojen kanssa.</h1>
 	<p class="lede">
 		Anna myynti-ilmoituksen URL-osoite (Oikotie, Etuovi, välittäjäsivut) tai liitä ilmoituksen
-		teksti suoraan. Tiedot — hinta, vastikkeet, tontti, tehdyt ja tulevat remontit — poimitaan
+		teksti suoraan. Tiedot (hinta, vastikkeet, tontti, tehdyt ja tulevat remontit) poimitaan
 		koneellisesti ja yhdistetään Tilastokeskuksen toteutuneisiin kauppahintoihin.
 	</p>
 </section>
@@ -134,7 +134,7 @@
 {#if form?.verdict && activeInput !== 'manual'}
 	<article class="result">
 		<p class="crumb">
-			{form.extracted.address ?? '—'} · {form.facts.postalCode} · {form.facts.roomsType} ·
+			{form.extracted.address ?? '–'} · {form.facts.postalCode} · {form.facts.roomsType} ·
 			{form.facts.livingAreaM2} m²
 			{#if form.facts.buildYear}· rak. {form.facts.buildYear}{/if}
 			{#if form.source}· lähde {form.source}{/if}
@@ -173,7 +173,7 @@
 
 		{#if form.insights.length}
 			<section class="card">
-				<h3>Taloyhtiö ja kohde — ilmoituksesta poimittua</h3>
+				<h3>Taloyhtiö ja kohde: ilmoituksesta poimittua</h3>
 				<ul>
 					{#each form.insights as line (line)}<li>{line}</li>{/each}
 				</ul>
@@ -188,10 +188,10 @@
 		</section>
 
 		<section class="card">
-			<h3>Asuntocard — taloyhtiön syväkatsaus <span class="beta">beta</span></h3>
+			<h3>Asuntocard: taloyhtiön syväkatsaus <span class="beta">beta</span></h3>
 			<p class="card-lede">
 				Ristivarmistamme remonttihistorian, saman taloyhtiön muut myynnit ja tonttitiedot
-				julkisista web-lähteistä — jokainen löydös lähteineen. Kortti valmistuu tyypillisesti
+				julkisista web-lähteistä, jokainen löydös lähteineen. Kortti valmistuu tyypillisesti
 				muutamassa minuutissa ja kuuluu RehtiArvio-tilaukseen.
 			</p>
 			<form method="POST" action="?/report" class="report-form">
@@ -235,8 +235,8 @@
 	<div class="waitlist__body">
 		<h2>Rakenteilla: kohderaportti</h2>
 		<p>
-			Maksullinen kohderaportti kokoaa taloyhtiön tilinpäätöksestä talouskortin — hoitokate,
-			lainat, vastikekehitys, remonttihistoria — yhdistettynä markkinahintavertailuun. Jätä
+			Maksullinen kohderaportti kokoaa taloyhtiön tilinpäätöksestä talouskortin (hoitokate,
+			lainat, vastikekehitys, remonttihistoria) yhdistettynä markkinahintavertailuun. Jätä
 			sähköpostiosoitteesi, niin saat kutsun ensimmäisten joukossa.
 		</p>
 	</div>
@@ -246,7 +246,7 @@
 			<button type="submit">Liity jonotuslistalle</button>
 		</form>
 		{#if form?.joined}
-			<p class="joined">Kiitos — sähköpostisi on kirjattu jonotuslistalle.</p>
+			<p class="joined">Kiitos! Sähköpostisi on kirjattu jonotuslistalle.</p>
 		{:else if form?.waitlistError}
 			<p class="error">{form.waitlistError}</p>
 		{/if}

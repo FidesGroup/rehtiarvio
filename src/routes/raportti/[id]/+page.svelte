@@ -14,7 +14,7 @@
 </script>
 
 <svelte:head>
-	<title>Asuntocard — RehtiArvio by Fides</title>
+	<title>Asuntocard | RehtiArvio by Fides</title>
 	<meta name="robots" content="noindex" />
 	{#if inFlight}
 		<meta http-equiv="refresh" content="12" />
@@ -25,7 +25,7 @@
 	<span class="eyebrow">Asuntocard</span>
 	<h1>{facts?.company ?? facts?.address ?? 'Taloyhtiö'}</h1>
 	<p class="crumb">
-		{facts?.address ?? '—'} · {facts?.postalCode ?? ''}
+		{facts?.address ?? '–'} · {facts?.postalCode ?? ''}
 		{#if facts?.roomsType}· {facts.roomsType}{/if}
 		{#if facts?.livingAreaM2}· {facts.livingAreaM2} m²{/if}
 		{#if facts?.buildYear}· rak. {facts.buildYear}{/if}
@@ -48,7 +48,7 @@
 		<h2>Korttia kootaan…</h2>
 		<p>
 			Haemme ja ristivarmistamme taloyhtiön tietoja julkisista web-lähteistä. Tämä kestää
-			tyypillisesti muutaman minuutin — sivu päivittyy itsestään, eikä sitä tarvitse pitää auki:
+			tyypillisesti muutaman minuutin. Sivu päivittyy itsestään, eikä sitä tarvitse pitää auki:
 			kortti odottaa tässä osoitteessa valmiina.
 		</p>
 	</section>
@@ -57,18 +57,18 @@
 		<h2>Kortin kokoaminen ei onnistunut</h2>
 		<p>
 			Taloyhtiölle ei löytynyt riittävästi julkisia web-lähteitä tai haku epäonnistui. Tämä on
-			beta — yritä myöhemmin uudelleen tai vastaa tilausvahvistukseen, niin selvitämme.
+			beta. Yritä myöhemmin uudelleen tai vastaa tilausvahvistukseen, niin selvitämme.
 		</p>
 	</section>
 {:else if card}
 	<div class="stack">
 		{#if card.corroborated?.renovations?.length}
 			<section class="card">
-				<h2>Remonttihistoria — ristivarmistettu</h2>
+				<h2>Ristivarmistettu remonttihistoria</h2>
 				<ul>
 					{#each card.corroborated.renovations as r (r)}
 						<li>
-							<b>{r.year}</b> {r.type}{#if r.evidence}&nbsp;— {r.evidence}{/if}
+							<b>{r.year}</b> {r.type}{#if r.evidence}: {r.evidence}{/if}
 							{#if r.source_url}&nbsp;<a href={r.source_url} rel="nofollow noopener" target="_blank">[{host(r.source_url)}]</a>{/if}
 						</li>
 					{/each}
@@ -151,7 +151,7 @@
 				Kortti on koottu koneellisesti julkisista web-lähteistä
 				{#if data.scorecard?.confidence != null}(kattavuusarvio
 					{Math.round((data.scorecard.confidence ?? 0) * 100)} %){/if}. Vain lähteissä näkyvät
-				tiedot on raportoitu — puuttuva tieto ei tarkoita, ettei sitä ole. Tarkista
+				tiedot on raportoitu. Puuttuva tieto ei tarkoita, ettei sitä ole. Tarkista
 				isännöitsijäntodistuksesta ennen ostopäätöstä. Tämä ei ole arvio eikä sijoitusneuvontaa.
 			</p>
 			{#if card.notes}<p class="fine">{card.notes}</p>{/if}

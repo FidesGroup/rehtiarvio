@@ -3,10 +3,10 @@
 </script>
 
 <svelte:head>
-	<title>Tilaa — RehtiArvio by Fides</title>
+	<title>Tilaa | RehtiArvio by Fides</title>
 	<meta
 		name="description"
-		content="RehtiArvio Sijoittaja -tilaus: asuntocardit — taloyhtiön syväkatsaus web-lähteistä koottuna, lähteineen."
+		content="RehtiArvio Sijoittaja -tilaus: asuntocardit: taloyhtiön syväkatsaus web-lähteistä koottuna, lähteineen."
 	/>
 </svelte:head>
 
@@ -16,7 +16,7 @@
 	<p class="lede">
 		Ilmainen analyysi kertoo, mitä ilmoitus väittää. Asuntocard kertoo, mitä siitä löytyy
 		muualta: remonttihistorian ristivarmistus, saman taloyhtiön muut myynnit, tontti- ja
-		isännöintitiedot — jokainen väite lähteineen.
+		isännöintitiedot, jokainen väite lähteineen.
 	</p>
 </section>
 
@@ -25,10 +25,10 @@
 		<h2>Mitä asuntocard sisältää</h2>
 		<ul>
 			<li>Remonttihistorian ristivarmistus julkisista web-lähteistä (putket, julkisivu, katto, ikkunat)</li>
-			<li>Saman taloyhtiön muut kohteet myynnissä — hintavertailu saman yhtiön sisällä</li>
+			<li>Saman taloyhtiön muut kohteet myynnissä, hintavertailu saman yhtiön sisällä</li>
 			<li>Tontin omistuksen ja isännöinnin varmistus</li>
 			<li>Punaiset liput: ristiriidat ilmoituksen ja muiden lähteiden välillä</li>
-			<li>Kaikki löydökset lähde-URL:eineen — ei mustia laatikoita</li>
+			<li>Kaikki löydökset lähde-URL:eineen, ei mustia laatikoita</li>
 		</ul>
 		<p class="fine">
 			Kortti kootaan koneellisesti julkisista web-lähteistä tilauksen jälkeen (tyypillisesti

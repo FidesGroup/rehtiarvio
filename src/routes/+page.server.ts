@@ -42,7 +42,7 @@ export const actions: Actions = {
 			return fail(400, { waitlistError: 'Tarkista sähköpostiosoite.' });
 		}
 		const ok = await addLead(email, 'landing-waitlist');
-		if (!ok) return fail(503, { waitlistError: 'Tallennus epäonnistui — yritä hetken kuluttua uudelleen.' });
+		if (!ok) return fail(503, { waitlistError: 'Tallennus epäonnistui. Yritä hetken kuluttua uudelleen.' });
 		return { joined: true };
 	},
 
@@ -77,7 +77,7 @@ export const actions: Actions = {
 				sourceUrl = url.href;
 			} catch (e) {
 				return fail(502, {
-					error: `Sivun haku epäonnistui (${e instanceof Error ? e.message : 'tuntematon virhe'}). Portaali voi estää automaattisen haun — avaa ilmoitus selaimessa, valitse kaikki (Ctrl+A), kopioi ja liitä teksti alla olevaan kenttään.`
+					error: `Sivun haku epäonnistui (${e instanceof Error ? e.message : 'tuntematon virhe'}). Portaali voi estää automaattisen haun. Avaa ilmoitus selaimessa, valitse kaikki (Ctrl+A), kopioi ja liitä teksti alla olevaan kenttään.`
 				});
 			}
 		}
@@ -87,7 +87,7 @@ export const actions: Actions = {
 		const facts = toFacts(extracted);
 		if ('error' in facts) {
 			return fail(422, {
-				error: `${facts.error} ${source ? 'Sivu ei ehkä sisällä tietoja ilman selainta — liitä ilmoituksen teksti suoraan.' : 'Tarkista että liitit koko ilmoituksen (Ctrl+A → kopioi).'}`
+				error: `${facts.error} ${source ? 'Sivu ei ehkä sisällä tietoja ilman selainta. Liitä ilmoituksen teksti suoraan.' : 'Tarkista että liitit koko ilmoituksen (Ctrl+A → kopioi).'}`
 			});
 		}
 
@@ -123,8 +123,8 @@ export const actions: Actions = {
 		);
 		resolvedFlags.push(
 			location
-				? 'Sijaintipainotettu vertailu on naapurialueiden kauppojen etäisyyspainotus (beta) — katu- ja rakennustason kauppahistoriaa se ei vielä sisällä.'
-				: 'Mikrosijaintia (katu, kerros, näkymä) vertailu ei vielä erottele — se vaatii kauppakohtaista aineistoa.'
+				? 'Sijaintipainotettu vertailu on naapurialueiden kauppojen etäisyyspainotus (beta). Katu- ja rakennustason kauppahistoriaa se ei vielä sisällä.'
+				: 'Mikrosijaintia (katu, kerros, näkymä) vertailu ei vielä erottele. Se vaatii kauppakohtaista aineistoa.'
 		);
 
 		await logQuery({
@@ -177,7 +177,7 @@ export const actions: Actions = {
 		if (!sub || sub.status !== 'active') {
 			return fail(402, {
 				reportError:
-					'Asuntocardit kuuluvat RehtiArvio-tilaukseen. Tilaa /tilaa-sivulta — tai jos olet jo tilannut, avaa /tili samalla selaimella.'
+					'Asuntocardit kuuluvat RehtiArvio-tilaukseen. Tilaa /tilaa-sivulta, tai jos olet jo tilannut, avaa /tili samalla selaimella.'
 			});
 		}
 
@@ -195,7 +195,7 @@ export const actions: Actions = {
 		) {
 			return fail(400, {
 				reportError:
-					'Asuntocard tarvitsee taloyhtiön nimen tai osoitteen — analysoi ilmoitus ensin.'
+					'Asuntocard tarvitsee taloyhtiön nimen tai osoitteen. Analysoi ilmoitus ensin.'
 			});
 		}
 
@@ -205,7 +205,7 @@ export const actions: Actions = {
 			listingUrl: typeof payload.sourceUrl === 'string' ? payload.sourceUrl : null,
 			facts: payload
 		});
-		if (!id) return fail(503, { reportError: 'Tallennus epäonnistui — yritä hetken kuluttua.' });
+		if (!id) return fail(503, { reportError: 'Tallennus epäonnistui. Yritä hetken kuluttua.' });
 		redirect(303, `/raportti/${id}`);
 	}
 };

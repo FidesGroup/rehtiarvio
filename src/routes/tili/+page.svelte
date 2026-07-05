@@ -3,7 +3,7 @@
 </script>
 
 <svelte:head>
-	<title>Tili — RehtiArvio by Fides</title>
+	<title>Tili | RehtiArvio by Fides</title>
 </svelte:head>
 
 <section class="hero">
@@ -12,13 +12,13 @@
 		<h1>Tilaus aktivoitu</h1>
 		<p class="lede">
 			Kiitos! Tilaus on nyt käytössä tällä selaimella ({data.email}). Asuntocardin saat
-			ilmoitusanalyysin tuloksista — analysoi kohde ja paina
+			ilmoitusanalyysin tuloksista: analysoi kohde ja paina
 			<b>”Kokoa asuntocard”</b>.
 		</p>
 		<p><a class="cta" href="/analyysi">Siirry ilmoitusanalyysiin →</a></p>
 	{:else if data.state === 'active'}
 		<h1>Tilaus voimassa</h1>
-		<p class="lede">{data.email} — asuntocardit käytettävissä ilmoitusanalyysin tuloksista.</p>
+		<p class="lede">{data.email}. Asuntocardit käytettävissä ilmoitusanalyysin tuloksista.</p>
 		<p><a class="cta" href="/analyysi">Siirry ilmoitusanalyysiin →</a></p>
 	{:else if data.state === 'past_due'}
 		<h1>Maksu odottaa</h1>
@@ -34,14 +34,14 @@
 		<h1>Aktivointi ei onnistunut</h1>
 		<p class="lede">
 			Maksuistunnon vahvistus epäonnistui. Jos kortiltasi veloitettiin, tilaus aktivoituu
-			hetken kuluttua automaattisesti — lataa tämä sivu uudelleen. Muussa tapauksessa yritä
+			hetken kuluttua automaattisesti. Lataa tämä sivu uudelleen. Muussa tapauksessa yritä
 			tilausta uudelleen.
 		</p>
 	{:else}
 		<h1>Ei aktiivista tilausta</h1>
 		<p class="lede">
 			Tällä selaimella ei ole aktiivista tilausta. Jos olet jo tilannut, avaa tilaussähköpostin
-			vahvistuslinkki samalla selaimella — tai tilaa alta.
+			vahvistuslinkki samalla selaimella, tai tilaa alta.
 		</p>
 		<p><a class="cta" href="/tilaa">Tilaa asuntocardit →</a></p>
 	{/if}

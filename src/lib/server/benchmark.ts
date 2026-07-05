@@ -127,7 +127,7 @@ export function evaluate(facts: ListingFacts): Verdict {
 
 	if (!facts.priceIsDebtFree) {
 		flags.push(
-			'Hinta syötetty myyntihintana. Jos kohteessa on yhtiölainaa, todellinen (velaton) neliöhinta on korkeampi — vertailu voi näyttää liian edulliselta.'
+			'Hinta syötetty myyntihintana. Jos kohteessa on yhtiölainaa, todellinen (velaton) neliöhinta on korkeampi, joten vertailu voi näyttää liian edulliselta.'
 		);
 	}
 	if (facts.buildYear && facts.buildYear >= 2010) {
@@ -142,7 +142,7 @@ export function evaluate(facts: ListingFacts): Verdict {
 		flags.push('Suuri asunto: suuret huoneistot myydään tyypillisesti alueen keskineliöhintaa halvemmalla.');
 	}
 	if (!facts.buildYear) {
-		flags.push('Rakennusvuosi ei tiedossa — ikä- ja kuntoerot eivät näy vertailussa.');
+		flags.push('Rakennusvuosi ei tiedossa, joten ikä- ja kuntoerot eivät näy vertailussa.');
 	}
 
 	if (!cell || cell.benchmark_eur_m2 === null) {
@@ -164,7 +164,7 @@ export function evaluate(facts: ListingFacts): Verdict {
 	const confidence = cell.n_4q >= 100 ? 'korkea' : cell.n_4q >= 30 ? 'kohtalainen' : 'matala';
 	if (confidence !== 'korkea') {
 		flags.push(
-			`Vertailu perustuu ${cell.n_4q} kauppaan viimeisen neljän tilastoneljänneksen ajalta — pieni otos, yksittäiset kaupat heiluttavat keskiarvoa.`
+			`Vertailu perustuu ${cell.n_4q} kauppaan viimeisen neljän tilastoneljänneksen ajalta. Pieni otos: yksittäiset kaupat heiluttavat keskiarvoa.`
 		);
 	}
 	flags.push(

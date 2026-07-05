@@ -7,7 +7,7 @@ export const load: PageServerLoad = async () => ({ enabled: stripeEnabled() });
 export const actions: Actions = {
 	default: async ({ request, url }) => {
 		if (!stripeEnabled()) {
-			return fail(503, { error: 'Tilaus ei ole vielä avoinna — liity odotuslistalle etusivulla.' });
+			return fail(503, { error: 'Tilaus ei ole vielä avoinna. Liity odotuslistalle etusivulla.' });
 		}
 		const email = String((await request.formData()).get('email') ?? '')
 			.trim()
@@ -19,7 +19,7 @@ export const actions: Actions = {
 		try {
 			checkoutUrl = await createSubscriptionCheckout(email, url.origin);
 		} catch {
-			return fail(502, { error: 'Maksusivun avaaminen epäonnistui — yritä hetken kuluttua.' });
+			return fail(502, { error: 'Maksusivun avaaminen epäonnistui. Yritä hetken kuluttua.' });
 		}
 		redirect(303, checkoutUrl);
 	}

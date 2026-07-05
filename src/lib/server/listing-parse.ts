@@ -212,15 +212,15 @@ export function deriveInsights(x: ExtractedListing): string[] {
 	if (x.condition) {
 		out.push(
 			/tyydyttävä|välttävä|huono/i.test(x.condition)
-				? `Kunto ilmoituksessa: ${x.condition} — keskimääräistä heikompi kunto selittää alle markkinan olevaa hintaa.`
+				? `Kunto ilmoituksessa: ${x.condition}. Keskimääräistä heikompi kunto selittää alle markkinan olevaa hintaa.`
 				: `Kunto ilmoituksessa: ${x.condition}.`
 		);
 	}
 	if (x.landOwnership === 'Oma') {
-		out.push('Tontti: oma — ei tontinvuokrariskiä.');
+		out.push('Tontti: oma, ei tontinvuokrariskiä.');
 	} else if (x.landOwnership && /vuokra|valinnainen/i.test(x.landOwnership)) {
 		out.push(
-			`Tontti: ${x.landOwnership} — vuokratontti lisää asumiskustannuksia ja vuokrankorotukset ovat riski. Tarkista vuokrasopimuksen päättymisvuosi.`
+			`Tontti: ${x.landOwnership}. Vuokratontti lisää asumiskustannuksia ja vuokrankorotukset ovat riski. Tarkista vuokrasopimuksen päättymisvuosi.`
 		);
 	}
 
@@ -237,9 +237,9 @@ export function deriveInsights(x: ExtractedListing): string[] {
 		if (hit && (!upcoming.has(hit[1]) || r.year < upcoming.get(hit[1])!)) upcoming.set(hit[1], r.year);
 	}
 	if (upcoming.size) {
-		out.push(`Tulossa isoja remontteja: ${[...upcoming.entries()].map(([k, y]) => `${k} (${y})`).join(', ')} — hankesuunnittelu tarkoittaa tyypillisesti merkittävää tulevaa lainaosuutta.`);
+		out.push(`Tulossa isoja remontteja: ${[...upcoming.entries()].map(([k, y]) => `${k} (${y})`).join(', ')}. Hankesuunnittelu tarkoittaa tyypillisesti merkittävää tulevaa lainaosuutta.`);
 	} else if (x.renovationsUpcoming.length) {
-		out.push('Tulevissa remonteissa ei näy suuria hankkeita (putket, julkisivu, katto, ikkunat) — tavanomaista ylläpitoa.');
+		out.push('Tulevissa remonteissa ei näy suuria hankkeita (putket, julkisivu, katto, ikkunat), vain tavanomaista ylläpitoa.');
 	}
 
 	// Studies and plans are not completed renovations: "putkistojen
@@ -255,7 +255,7 @@ export function deriveInsights(x: ExtractedListing): string[] {
 		out.push(`Tehdyt isot remontit: ${[...doneMajor.entries()].map(([k, y]) => `${k} ${y}`).join(', ')}.`);
 	}
 	if (x.buildYear && x.buildYear < 1985 && !doneMajor.has('putkiremontti')) {
-		out.push('Putkiremonttia ei näy remonttihistoriassa vaikka rakennus on yli 40 v — varmista LVV-kuntotutkimuksesta/PTS:stä, milloin linjasaneeraus on edessä.');
+		out.push('Putkiremonttia ei näy remonttihistoriassa vaikka rakennus on yli 40 v. Varmista LVV-kuntotutkimuksesta/PTS:stä, milloin linjasaneeraus on edessä.');
 	}
 
 	if (x.debtShareEur !== null && x.debtShareEur > 0 && x.livingAreaM2) {
@@ -264,14 +264,14 @@ export function deriveInsights(x: ExtractedListing): string[] {
 	if (x.maintenanceChargeEurMo !== null && x.livingAreaM2) {
 		const perM2 = x.maintenanceChargeEurMo / x.livingAreaM2;
 		if (perM2 > 7) {
-			out.push(`Hoitovastike ${perM2.toFixed(1)} €/m²/kk on korkea (tyypillisesti 4–6 €/m²/kk) — selvitä syy tilinpäätöksestä.`);
+			out.push(`Hoitovastike ${perM2.toFixed(1)} €/m²/kk on korkea (tyypillisesti 4–6 €/m²/kk). Selvitä syy tilinpäätöksestä.`);
 		}
 	}
 	if (x.mortgagesEur !== null) {
 		const perUnit = x.apartmentCount
 			? ` (~${Math.round(x.mortgagesEur / x.apartmentCount).toLocaleString('fi-FI')} €/huoneisto)`
 			: '';
-		out.push(`Taloyhtiön kiinnitykset ${Math.round(x.mortgagesEur).toLocaleString('fi-FI')} €${perUnit} — kertoo panttauksen ylärajan, ei nostettua lainaa.`);
+		out.push(`Taloyhtiön kiinnitykset ${Math.round(x.mortgagesEur).toLocaleString('fi-FI')} €${perUnit}. Summa kertoo panttauksen ylärajan, ei nostettua lainaa.`);
 	}
 	return out;
 }

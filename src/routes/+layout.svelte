@@ -12,7 +12,7 @@
 <div class="shell">
 	<header>
 		<div class="brand">
-			<a class="fides" href={fidesUrl} aria-label="Fides Group — etusivu" target="_blank" rel="noopener">
+			<a class="fides" href={fidesUrl} aria-label="Fides Group, etusivu" target="_blank" rel="noopener">
 				<span class="fides__mark">FIDES</span>
 				<span class="fides__sub">GROUP</span>
 			</a>
@@ -45,7 +45,7 @@
 		</div>
 		<p class="attr">
 			Lähde: <a href="https://stat.fi/tilasto/ashi">Tilastokeskus</a>, vanhojen osakeasuntojen
-			kaupat postinumeroalueittain (CC BY 4.0). Suuntaa antava seula — ei arviolausunto eikä
+			kaupat postinumeroalueittain (CC BY 4.0). Suuntaa antava seula, ei arviolausunto eikä
 			sijoitusneuvontaa.
 		</p>
 	</footer>
