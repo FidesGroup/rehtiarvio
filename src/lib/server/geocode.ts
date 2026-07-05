@@ -12,9 +12,12 @@ export async function geocodeAddress(
 ): Promise<{ lon: number; lat: number } | null> {
 	if (!env.MML_API_KEY) return null;
 	const text = [address, postalCode].filter(Boolean).join(' ');
+	// sources=addresses is required: the default source set (geographic names)
+	// never matches street addresses, returning success with zero features.
 	const url =
 		'https://avoin-paikkatieto.maanmittauslaitos.fi/geocoding/v2/pelias/search' +
-		`?text=${encodeURIComponent(text)}&size=1&lang=fi&api-key=${env.MML_API_KEY}`;
+		`?text=${encodeURIComponent(text)}&size=1&lang=fi&sources=addresses` +
+		`&api-key=${encodeURIComponent(env.MML_API_KEY)}`;
 	try {
 		const res = await fetchFn(url, { signal: AbortSignal.timeout(5000) });
 		if (!res.ok) return null;
