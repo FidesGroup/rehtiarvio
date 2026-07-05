@@ -3,7 +3,8 @@
 	let { children } = $props();
 	const links = [
 		{ href: '/', label: 'Analyysi' },
-		{ href: '/kartta', label: 'Hintakartta' }
+		{ href: '/kartta', label: 'Hintakartta' },
+		{ href: '/tilaa', label: 'Asuntocardit' }
 	];
 	const fidesUrl = 'https://fidesgroup.fi';
 </script>

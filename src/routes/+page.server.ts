@@ -1,6 +1,8 @@
-import { fail } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import { knownPostalCodes, evaluate, locationBenchmark } from '$lib/server/benchmark';
 import { geocodeAddress } from '$lib/server/geocode';
+import { createReport } from '$lib/server/reports';
+import { getSubscriberByToken } from '$lib/server/subscribers';
 import { addLead, logQuery } from '$lib/server/supalog';
 import {
 	allowedListingUrl, deriveInsights, htmlToText, parseListingText,
@@ -44,13 +46,16 @@ export const actions: Actions = {
 		return { joined: true };
 	},
 
-	default: async ({ request, fetch }) => {
+	// NB: named because SvelteKit forbids a default action next to named ones
+	// (waitlist/report) — the form posts to ?/analyze.
+	analyze: async ({ request, fetch }) => {
 		const fd = await request.formData();
 		const pasted = String(fd.get('text') ?? '').trim();
 		const urlRaw = String(fd.get('url') ?? '').trim();
 
 		let text = pasted;
 		let source: string | null = null;
+		let sourceUrl: string | null = null;
 
 		if (!text && urlRaw) {
 			const url = allowedListingUrl(urlRaw);
@@ -69,6 +74,7 @@ export const actions: Actions = {
 				const html = (await res.text()).slice(0, 2_000_000);
 				text = htmlToText(html);
 				source = url.hostname;
+				sourceUrl = url.href;
 			} catch (e) {
 				return fail(502, {
 					error: `Sivun haku epäonnistui (${e instanceof Error ? e.message : 'tuntematon virhe'}). Portaali voi estää automaattisen haun — avaa ilmoitus selaimessa, valitse kaikki (Ctrl+A), kopioi ja liitä teksti alla olevaan kenttään.`
@@ -130,13 +136,76 @@ export const actions: Actions = {
 			confidence: verdict.confidence
 		});
 
+		// Server-built asuntocard job payload: echoed back via a hidden field on
+		// the ?/report form so a card can be ordered without re-parsing the text.
+		const reportPayload = JSON.stringify({
+			company: extracted.housingCompany,
+			address: extracted.address,
+			postalCode: facts.postalCode,
+			buildYear: facts.buildYear,
+			roomsType: facts.roomsType,
+			livingAreaM2: facts.livingAreaM2,
+			priceEur: facts.priceEur,
+			landOwnership: extracted.landOwnership,
+			renovationsDone: extracted.renovationsDone,
+			renovationsUpcoming: extracted.renovationsUpcoming,
+			verdict: {
+				deltaPct: verdict.deltaPct,
+				listingEurM2: verdict.listingEurM2,
+				benchmarkEurM2: verdict.benchmarkEurM2,
+				confidence: verdict.confidence
+			},
+			location: location ? { eurM2: location.eurM2, deltaPct: location.deltaPct } : null,
+			source,
+			sourceUrl
+		});
+
 		return {
 			extracted,
 			facts,
 			verdict: { ...verdict, flags: resolvedFlags },
 			insights: deriveInsights(extracted),
 			location,
-			source
+			source,
+			reportPayload
 		};
+	},
+
+	report: async ({ request, cookies }) => {
+		const token = cookies.get('ra_access');
+		const sub = token ? await getSubscriberByToken(token) : null;
+		if (!sub || sub.status !== 'active') {
+			return fail(402, {
+				reportError:
+					'Asuntocardit kuuluvat RehtiArvio-tilaukseen. Tilaa /tilaa-sivulta — tai jos olet jo tilannut, avaa /tili samalla selaimella.'
+			});
+		}
+
+		const raw = String((await request.formData()).get('payload') ?? '');
+		if (!raw || raw.length > 24_000) return fail(400, { reportError: 'Virheellinen pyyntö.' });
+		let payload: Record<string, unknown>;
+		try {
+			payload = JSON.parse(raw);
+		} catch {
+			return fail(400, { reportError: 'Virheellinen pyyntö.' });
+		}
+		if (
+			!/^\d{5}$/.test(String(payload?.postalCode ?? '')) ||
+			(!payload.company && !payload.address)
+		) {
+			return fail(400, {
+				reportError:
+					'Asuntocard tarvitsee taloyhtiön nimen tai osoitteen — analysoi ilmoitus ensin.'
+			});
+		}
+
+		const id = await createReport({
+			email: sub.email,
+			subscriberId: sub.id,
+			listingUrl: typeof payload.sourceUrl === 'string' ? payload.sourceUrl : null,
+			facts: payload
+		});
+		if (!id) return fail(503, { reportError: 'Tallennus epäonnistui — yritä hetken kuluttua.' });
+		redirect(303, `/raportti/${id}`);
 	}
 };

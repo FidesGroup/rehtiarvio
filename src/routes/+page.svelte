@@ -96,7 +96,7 @@
 			</div>
 		</form>
 	{:else}
-		<form method="POST" class="auto-form" use:enhance>
+		<form method="POST" action="?/analyze" class="auto-form" use:enhance>
 			{#if activeInput === 'url'}
 				<label class="field">
 					<span class="lbl">Ilmoituksen URL</span>
@@ -123,6 +123,9 @@
 			</div>
 			{#if form?.error}
 				<p class="error">{form.error}</p>
+			{/if}
+			{#if form?.reportError}
+				<p class="error">{form.reportError}</p>
 			{/if}
 		</form>
 	{/if}
@@ -182,6 +185,20 @@
 			<ul class="muted">
 				{#each form.verdict.flags as flag (flag)}<li>{flag}</li>{/each}
 			</ul>
+		</section>
+
+		<section class="card">
+			<h3>Asuntocard — taloyhtiön syväkatsaus <span class="beta">beta</span></h3>
+			<p class="card-lede">
+				Ristivarmistamme remonttihistorian, saman taloyhtiön muut myynnit ja tonttitiedot
+				julkisista web-lähteistä — jokainen löydös lähteineen. Kortti valmistuu tyypillisesti
+				muutamassa minuutissa ja kuuluu RehtiArvio-tilaukseen.
+			</p>
+			<form method="POST" action="?/report" class="report-form">
+				<input type="hidden" name="payload" value={form.reportPayload} />
+				<button type="submit">Kokoa asuntocard</button>
+				<a class="sub-link" href="/tilaa">Ei vielä tilausta?</a>
+			</form>
 		</section>
 	</article>
 {/if}
@@ -700,5 +717,30 @@
 		.prop { padding: 1.25rem 1.4rem; }
 		.delta { font-size: 1.9rem; }
 		.card { padding: 1.25rem 1.4rem; }
+	}
+
+	.card-lede {
+		color: var(--ink-2);
+		margin: 0 0 1rem;
+		max-width: 44rem;
+	}
+	form.report-form {
+		background: none;
+		border: none;
+		border-radius: 0;
+		box-shadow: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 1rem;
+	}
+	form.report-form button {
+		width: auto;
+	}
+	.sub-link {
+		color: var(--ink-2);
+		font-size: 0.9rem;
 	}
 </style>

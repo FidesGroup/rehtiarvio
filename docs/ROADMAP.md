@@ -23,6 +23,16 @@ be public.
 - Whole-Finland seed: StatFin 13mt, 4-quarter transaction-weighted means,
   confidence tiers, suppressed-cell handling.
 
+## v1 (2026-07-05): asuntocard subscription chain
+
+Subscription → Stripe Checkout (`/tilaa`, REST, no SDK) → webhook
+(`/api/stripe/webhook`, HMAC-verified) → `subscribers` row + access-token
+cookie (`/tili`) → gated `?/report` action on `/analyysi` → `reports` row →
+offline worker (private repo) fills `scorecards` → `/raportti/[id]` renders
+the asuntocard with source links, self-refreshing until ready. Stripe keys +
+`STRIPE_PRICE_ID` env open the tilaus page; without them it shows the
+waitlist pointer.
+
 ## Next up (technical)
 
 1. Apply Supabase migrations (`supabase/combined_v0.sql` in the SQL editor) —
