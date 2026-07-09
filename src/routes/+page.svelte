@@ -5,7 +5,7 @@
 </script>
 
 <svelte:head>
-	<title>RehtiArvio | Ilmoitusanalyysi ja markkinahintavertailu</title>
+	<title>RehtiArvio — ilmoitusanalyysi ja markkinahintavertailu</title>
 </svelte:head>
 
 <section class="hero">
@@ -287,9 +287,8 @@
 		line-height: var(--lh-body);
 	}
 
-	/* ===== Analyzer container (PRIMARY card) ===== */
 	.analyzer {
-		background: var(--surface);
+		background: var(--sky);
 		padding: 1.25rem 1.25rem 1.5rem;
 		border-radius: var(--radius-lg);
 		box-shadow: var(--shadow-lg);
@@ -353,7 +352,6 @@
 		font-size: var(--text-xs);
 	}
 
-	/* Analyzer inputs */
 	.analyzer input,
 	.analyzer textarea,
 	.analyzer select {
@@ -364,10 +362,7 @@
 		border: 1px solid transparent;
 		padding: 0.85rem 1rem;
 		border-radius: var(--radius-md);
-		transition:
-			background 0.15s ease,
-			border-color 0.15s ease,
-			box-shadow 0.15s ease;
+		transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
 		width: 100%;
 	}
 	.analyzer textarea {
@@ -414,12 +409,7 @@
 		cursor: pointer;
 		border-radius: var(--radius-pill);
 		letter-spacing: var(--ls-snug);
-		transition:
-			background 0.15s ease,
-			color 0.15s ease,
-			border-color 0.15s ease,
-			transform 0.05s ease,
-			box-shadow 0.15s ease;
+		transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.05s ease, box-shadow 0.15s ease;
 		box-shadow: 0 1px 2px var(--ring), 0 4px 12px var(--ring);
 	}
 	.auto__actions button[type='submit']:hover,
@@ -428,10 +418,6 @@
 		border-color: var(--baltic-2);
 		transform: translateY(-1px);
 		box-shadow: 0 2px 4px var(--ring), 0 8px 20px var(--ring);
-	}
-	.auto__actions button[type='submit']:active,
-	.manual__actions button[type='submit']:active {
-		transform: translateY(0);
 	}
 	.hint {
 		color: var(--ink-3);
@@ -454,7 +440,6 @@
 		}
 	}
 
-	/* ===== Manual form (Syötä tiedot käsin) ===== */
 	.manual-form {
 		display: flex;
 		flex-direction: column;
@@ -471,6 +456,8 @@
 		display: grid;
 		grid-template-columns: repeat(3, minmax(0, 1fr));
 		gap: 0.85rem 1rem;
+		padding: 1rem;
+		border-radius: var(--radius-md);
 	}
 	.manual-grid label {
 		display: flex;
@@ -481,7 +468,6 @@
 		display: flex;
 	}
 
-	/* ===== Result block ===== */
 	.result {
 		margin-top: 1.5rem;
 		display: flex;
@@ -518,7 +504,7 @@
 	.delta.none { color: var(--ink); font-size: var(--text-2xl); }
 
 	.card {
-		background: var(--surface);
+		background: var(--sky);
 		border: 1px solid var(--line);
 		padding: 1.5rem 1.75rem;
 		box-shadow: var(--shadow-sm);
@@ -562,7 +548,6 @@
 	}
 	ul.muted { color: var(--ink-2); }
 
-	/* ===== Properties grid ===== */
 	.props {
 		display: grid;
 		grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -570,7 +555,7 @@
 		margin-top: 3rem;
 	}
 	.prop {
-		background: var(--surface);
+		background: var(--sky);
 		border: 1px solid var(--line);
 		border-radius: var(--radius-lg);
 		padding: 1.5rem 1.6rem;
@@ -608,13 +593,12 @@
 		text-decoration-thickness: 1px;
 	}
 
-	/* ===== Waitlist ===== */
 	.waitlist {
 		display: grid;
 		grid-template-columns: 1.2fr 1fr;
 		gap: 2rem;
 		align-items: center;
-		background: var(--surface);
+		background: var(--sky);
 		border: 1px solid var(--line);
 		border-radius: var(--radius-lg);
 		padding: 2.25rem 2.5rem;
@@ -683,8 +667,31 @@
 		margin: 0.5rem 0 0;
 		font-size: var(--text-sm);
 	}
+	.card-lede {
+		color: var(--ink-2);
+		margin: 0 0 1rem;
+		max-width: 44rem;
+	}
+	form.report-form {
+		background: none;
+		border: none;
+		border-radius: 0;
+		box-shadow: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 1rem;
+	}
+	form.report-form button {
+		width: auto;
+	}
+	.sub-link {
+		color: var(--ink-2);
+		font-size: 0.9rem;
+	}
 
-	/* ===== Mobile-first layout overrides (type is fluid via tokens) ===== */
 	@media (max-width: 860px) {
 		.analyzer { padding: 1.1rem; }
 		.manual-grid { grid-template-columns: 1fr 1fr; }
@@ -718,30 +725,5 @@
 		.waitlist__cta form button { width: 100%; }
 		.prop { padding: 1.25rem 1.4rem; }
 		.card { padding: 1.25rem 1.4rem; }
-	}
-
-	.card-lede {
-		color: var(--ink-2);
-		margin: 0 0 1rem;
-		max-width: 44rem;
-	}
-	form.report-form {
-		background: none;
-		border: none;
-		border-radius: 0;
-		box-shadow: none;
-		padding: 0;
-		margin: 0;
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		gap: 1rem;
-	}
-	form.report-form button {
-		width: auto;
-	}
-	.sub-link {
-		color: var(--ink-2);
-		font-size: 0.9rem;
 	}
 </style>

@@ -134,7 +134,7 @@
 		margin: 0 0 2rem;
 	}
 	dl div {
-		background: var(--surface);
+		background: var(--sky);
 		border: 1px solid var(--line);
 		border-radius: var(--radius-md);
 		padding: 1.1rem 1.25rem;
@@ -186,7 +186,7 @@
 	}
 
 	.card {
-		background: var(--surface);
+		background: var(--sky);
 		border: 1px solid var(--line);
 		padding: 1.5rem 1.75rem;
 		box-shadow: var(--shadow-sm);
@@ -227,7 +227,6 @@
 		color: var(--ink);
 	}
 
-	/* ===== Mobile-first layout (type is fluid via tokens) ===== */
 	@media (max-width: 720px) {
 		dl {
 			grid-template-columns: repeat(2, minmax(0, 1fr));

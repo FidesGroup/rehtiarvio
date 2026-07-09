@@ -11,16 +11,10 @@
 </script>
 
 <div class="shell">
+	<div class="watermark">RehtiArvio</div>
 	<header>
 		<div class="brand">
-			<a class="fides" href={fidesUrl} aria-label="Fides Group, etusivu" target="_blank" rel="noopener">
-				<span class="fides__mark">FIDES</span>
-				<span class="fides__sub">GROUP</span>
-			</a>
-			<div class="brand__wordmark">
-				<a class="wordmark" href="/">RehtiArvio</a>
-				<span class="byline">Markkinahinta-analyysi · by Fides Group</span>
-			</div>
+			<a class="wordmark" href="/">RehtiArvio</a>
 		</div>
 		<nav aria-label="Päänavigaatio">
 			{#each links as l (l.href)}
@@ -62,6 +56,7 @@
 		--copper-2:   #8a3f1f;
 		--pine:       #2e6b46;
 		--pine-2:     #1f5234;
+		--sky:        #e0f2f1;
 		--over:       var(--copper);
 		--under:      var(--pine);
 		--accent:     var(--baltic);
@@ -129,6 +124,7 @@
 			--copper-2:   #e9a384;
 			--pine:       #6cb386;
 			--pine-2:     #8dc9a3;
+			--sky:        #132c2c;
 			--over:       var(--copper);
 			--under:      var(--pine);
 			--accent:     var(--baltic);
@@ -138,14 +134,7 @@
 		}
 	}
 
-	/* Must be :global — a bare `*` in a component style only reaches the
-	   layout's own elements, so page-level inputs with width:100% + padding
-	   overflowed their containers. */
-	:global(*),
-	:global(*::before),
-	:global(*::after) {
-		box-sizing: border-box;
-	}
+	:global(*) { box-sizing: border-box; }
 
 	:global(body) {
 		margin: 0;
@@ -158,10 +147,25 @@
 		letter-spacing: var(--ls-snug);
 	}
 
-	:global(:focus-visible) {
+	:global(a:focus-visible), :global(button:focus-visible), :global(.tab:focus-visible), :global(.fides:focus-visible) {
 		outline: 2px solid var(--baltic);
 		outline-offset: 3px;
 		border-radius: inherit;
+	}
+
+	.watermark {
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		font-size: 20rem;
+		font-weight: 800;
+		color: var(--ink);
+		opacity: 0.03;
+		z-index: -1;
+		pointer-events: none;
+		user-select: none;
+		white-space: nowrap;
 	}
 
 	.shell {
@@ -188,71 +192,13 @@
 		gap: 0.9rem;
 	}
 
-	.fides {
-		font-family: 'IBM Plex Sans Variable', 'IBM Plex Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-		font-weight: 700;
-		background: var(--fides-bg);
-		color: var(--fides-ink);
-		display: inline-flex;
-		flex-direction: column;
-		align-items: stretch;
-		justify-content: center;
-		padding: 0.6rem 0.8rem 0.45rem;
-		line-height: 0.95;
-		letter-spacing: 0.04em;
-		text-decoration: none;
-		border: 1px solid var(--fides-bg);
-		user-select: none;
-		border-radius: var(--radius-sm);
-		transition: transform 0.15s ease;
-	}
-	.fides:hover {
-		transform: translateY(-1px);
-	}
-	.fides__mark {
-		font-size: 1.05rem;
-	}
-	.fides__sub {
-		font-size: 0.5rem;
-		font-weight: 500;
-		letter-spacing: 0.32em;
-		text-align: center;
-		padding-top: 0.18rem;
-		border-top: 1px solid var(--fides-ink);
-		margin-top: 0.22rem;
-		opacity: 0.85;
-	}
-	.fides--small .fides__mark {
-		font-size: 0.8rem;
-	}
-	.fides--small .fides__sub {
-		font-size: 0.42rem;
-		letter-spacing: 0.3em;
-	}
-	.fides--small {
-		padding: 0.45rem 0.6rem 0.32rem;
-	}
-
-	.brand__wordmark {
-		display: flex;
-		flex-direction: column;
-		gap: 0.2rem;
-	}
-
 	.wordmark {
-		font-size: 1.45rem;
-		font-weight: 600;
+		font-size: 1.75rem;
+		font-weight: 700;
 		letter-spacing: var(--ls-tight);
-		color: var(--ink);
+		color: var(--baltic);
 		text-decoration: none;
 		line-height: 1;
-	}
-
-	.byline {
-		font-size: var(--text-xs);
-		color: var(--ink-2);
-		letter-spacing: var(--ls-snug);
-		font-weight: 400;
 	}
 
 	nav {
@@ -299,6 +245,36 @@
 		flex-wrap: wrap;
 	}
 
+	.fides {
+		font-family: 'IBM Plex Sans Variable', 'IBM Plex Sans', sans-serif;
+		font-weight: 700;
+		background: var(--fides-bg);
+		color: var(--fides-ink);
+		display: inline-flex;
+		flex-direction: column;
+		align-items: stretch;
+		justify-content: center;
+		padding: 0.45rem 0.6rem 0.32rem;
+		line-height: 0.95;
+		letter-spacing: 0.04em;
+		text-decoration: none;
+		border: 1px solid var(--fides-bg);
+		user-select: none;
+		border-radius: var(--radius-sm);
+	}
+	.fides__mark {
+		font-size: 0.8rem;
+	}
+	.fides__sub {
+		font-size: 0.42rem;
+		letter-spacing: 0.3em;
+		text-align: center;
+		padding-top: 0.18rem;
+		border-top: 1px solid var(--fides-ink);
+		margin-top: 0.22rem;
+		opacity: 0.85;
+	}
+
 	.footer__copy {
 		color: var(--ink-2);
 		max-width: 38rem;
@@ -322,7 +298,6 @@
 		text-decoration-color: var(--ink-3);
 	}
 
-	/* ===== Mobile-first (type is fluid via tokens) ===== */
 	@media (max-width: 640px) {
 		.shell {
 			padding: 1.25rem 1rem 4rem;
@@ -332,14 +307,8 @@
 			gap: 0.85rem;
 			padding-bottom: 1rem;
 		}
-		.brand {
-			gap: 0.7rem;
-		}
-		.byline {
-			display: none;
-		}
-		.fides__mark {
-			font-size: 0.95rem;
+		.watermark {
+			font-size: 12rem;
 		}
 		nav {
 			width: 100%;
