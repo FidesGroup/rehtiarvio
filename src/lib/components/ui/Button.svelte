@@ -58,7 +58,7 @@
 		text-decoration: none;
 		border: 1px solid transparent;
 		cursor: pointer;
-		border-radius: var(--radius-full);
+		border-radius: var(--radius-sm);
 		transition:
 			background var(--dur-fast) var(--ease-standard),
 			color var(--dur-fast) var(--ease-standard),
@@ -97,7 +97,7 @@
 		background: var(--brand);
 		color: var(--brand-ink);
 		border-color: var(--brand);
-		box-shadow: 0 1px 2px var(--ring), 0 4px 14px -4px var(--ring);
+		box-shadow: var(--shadow-xs);
 	}
 	.btn--primary:hover {
 		background: var(--brand-600);

@@ -40,14 +40,14 @@
 	}
 
 	function fillFor(eur: number | null): string {
-		if (eur === null || eur <= 0) return 'var(--line-2)';
+		if (eur === null || eur <= 0) return 'var(--border-2)';
 		const t = lightness(eur);
 		// 5-step sequential ramp on the Baltic petrol hue.
-		if (t < 0.2) return 'color-mix(in srgb, var(--baltic) 18%, var(--surface))';
-		if (t < 0.4) return 'color-mix(in srgb, var(--baltic) 38%, var(--surface))';
-		if (t < 0.6) return 'color-mix(in srgb, var(--baltic) 58%, var(--surface))';
-		if (t < 0.8) return 'color-mix(in srgb, var(--baltic) 78%, var(--surface))';
-		return 'var(--baltic)';
+		if (t < 0.2) return 'color-mix(in srgb, var(--brand) 18%, var(--surface))';
+		if (t < 0.4) return 'color-mix(in srgb, var(--brand) 38%, var(--surface))';
+		if (t < 0.6) return 'color-mix(in srgb, var(--brand) 58%, var(--surface))';
+		if (t < 0.8) return 'color-mix(in srgb, var(--brand) 78%, var(--surface))';
+		return 'var(--brand)';
 	}
 
 	let hovered = $state<Point | null>(null);
@@ -105,7 +105,7 @@
 		width: var(--mmap-size);
 		height: calc(var(--mmap-size) * 1.33);
 		max-width: 100%;
-		border: 1px solid var(--line);
+		border: 1px solid var(--border);
 		border-radius: var(--radius-lg);
 		background: var(--surface);
 		box-shadow: var(--shadow-md);
@@ -125,8 +125,8 @@
 		gap: 0.4rem;
 		padding: 0.4rem 0.7rem;
 		background: var(--surface);
-		border: 1px solid var(--line);
-		border-radius: var(--radius-pill);
+		border: 1px solid var(--border);
+		border-radius: var(--radius-full);
 		box-shadow: var(--shadow-sm);
 		font-size: var(--text-xs);
 		color: var(--ink-2);
@@ -135,16 +135,16 @@
 		display: inline-block;
 		width: 80px;
 		height: 8px;
-		border-radius: var(--radius-pill);
+		border-radius: var(--radius-full);
 		background: linear-gradient(
 			to right,
-			color-mix(in srgb, var(--baltic) 18%, var(--surface)),
-			color-mix(in srgb, var(--baltic) 38%, var(--surface)),
-			color-mix(in srgb, var(--baltic) 58%, var(--surface)),
-			color-mix(in srgb, var(--baltic) 78%, var(--surface)),
-			var(--baltic)
+			color-mix(in srgb, var(--brand) 18%, var(--surface)),
+			color-mix(in srgb, var(--brand) 38%, var(--surface)),
+			color-mix(in srgb, var(--brand) 58%, var(--surface)),
+			color-mix(in srgb, var(--brand) 78%, var(--surface)),
+			var(--brand)
 		);
-		border: 1px solid var(--line);
+		border: 1px solid var(--border);
 	}
 	.mmap__legend-label {
 		font-variant-numeric: tabular-nums;
@@ -163,7 +163,7 @@
 		gap: 0.1rem;
 		padding: 0.55rem 0.7rem;
 		background: var(--surface);
-		border: 1px solid var(--line);
+		border: 1px solid var(--border);
 		border-radius: var(--radius-md);
 		box-shadow: var(--shadow-md);
 		font-size: var(--text-sm);

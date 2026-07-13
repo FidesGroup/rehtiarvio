@@ -282,7 +282,7 @@
 	.analyzer {
 		background: var(--surface-tint);
 		border: 1px solid var(--border);
-		border-radius: var(--radius-xl);
+		border-radius: var(--radius-lg);
 		padding: 1.5rem 1.75rem 1.75rem;
 		box-shadow: var(--shadow-md);
 		display: flex;
@@ -297,7 +297,7 @@
 		gap: 0;
 		padding: 0.25rem;
 		background: var(--bg);
-		border-radius: var(--radius-full);
+		border-radius: var(--radius-md);
 		width: fit-content;
 		max-width: 100%;
 		flex-wrap: wrap;
@@ -310,9 +310,10 @@
 		color: var(--ink-2);
 		background: transparent;
 		border: none;
-		padding: 0.55rem 1rem;
+		padding: 0.7rem 1rem;
+		min-height: 44px;
 		cursor: pointer;
-		border-radius: var(--radius-full);
+		border-radius: var(--radius-sm);
 		transition: color var(--dur-fast) var(--ease-standard);
 		position: relative;
 		z-index: 1;
@@ -330,7 +331,7 @@
 		left: 0.25rem;
 		width: calc((100% - 0.5rem) / var(--seg-count));
 		background: var(--surface);
-		border-radius: var(--radius-full);
+		border-radius: var(--radius-sm);
 		box-shadow: var(--shadow-xs);
 		transform: translateX(calc(var(--seg-i) * 100%));
 		transition: transform var(--dur-base) var(--ease-emphasized);

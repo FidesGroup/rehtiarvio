@@ -171,7 +171,7 @@
 		font-weight: 500;
 		text-decoration: none;
 		padding: 0.45rem 0.75rem;
-		border-radius: var(--radius-full);
+		border-radius: var(--radius-sm);
 		transition: background var(--dur-fast) var(--ease-standard), color var(--dur-fast) var(--ease-standard);
 	}
 
@@ -195,8 +195,8 @@
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		width: 38px;
-		height: 38px;
+		width: 44px;
+		height: 44px;
 		border-radius: var(--radius-full);
 		background: transparent;
 		color: var(--ink-2);

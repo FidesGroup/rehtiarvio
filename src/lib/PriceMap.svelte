@@ -132,7 +132,7 @@
 <style>
 	.mapwrap {
 		position: relative;
-		border: 1px solid var(--line);
+		border: 1px solid var(--border);
 	}
 	.map {
 		height: var(--h);
@@ -142,7 +142,7 @@
 		position: absolute;
 		pointer-events: none;
 		background: var(--surface);
-		border: 1px solid var(--line);
+		border: 1px solid var(--border);
 		color: var(--ink);
 		padding: 0.4rem 0.6rem;
 		font-size: var(--text-sm);
@@ -160,7 +160,7 @@
 		left: 0.75rem;
 		bottom: 0.75rem;
 		background: var(--surface);
-		border: 1px solid var(--line);
+		border: 1px solid var(--border);
 		padding: 0.45rem 0.6rem;
 		display: grid;
 		grid-template-columns: repeat(6, 1.4rem);
