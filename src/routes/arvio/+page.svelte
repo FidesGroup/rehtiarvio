@@ -1,6 +1,7 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	let { data } = $props();
-	const { facts, verdict } = $derived(data);
+	const { facts, verdict, yield: yieldResult, rentEstimate } = $derived(data);
 	const fmt = new Intl.NumberFormat('fi-FI');
 	const overUnder = $derived(
 		verdict.deltaPct === null ? null : verdict.deltaPct >= 0 ? 'over' : 'under'
@@ -12,6 +13,19 @@
 				? 'Pyyntihinta on alueen toteutuneiden kauppojen yläpuolella'
 				: 'Pyyntihinta on alueen toteutuneiden kauppojen alapuolella'
 	);
+	const shareUrl = $derived($page.url.toString());
+	const ogImageUrl = $derived(`/arvio/og?${$page.url.searchParams.toString()}`);
+	let copyState = $state<'idle' | 'copied' | 'error'>('idle');
+	async function copyShareLink() {
+		try {
+			await navigator.clipboard.writeText(shareUrl);
+			copyState = 'copied';
+			setTimeout(() => (copyState = 'idle'), 2000);
+		} catch {
+			copyState = 'error';
+			setTimeout(() => (copyState = 'idle'), 2000);
+		}
+	}
 </script>
 
 <svelte:head>
@@ -20,6 +34,14 @@
 			? 'Ei vertailuarvoa'
 			: `${verdict.deltaPct > 0 ? '+' : ''}${verdict.deltaPct} % vs alue`} | RehtiArvio by Fides
 	</title>
+	<meta property="og:title" content={`RehtiArvio: ${verdictLabel}`} />
+	<meta property="og:description" content={`${facts.postalCode} · ${facts.roomsType} · ${facts.livingAreaM2} m² — ${verdictLabel}`} />
+	<meta property="og:image" content={ogImageUrl} />
+	<meta property="og:type" content="website" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content={`RehtiArvio: ${verdictLabel}`} />
+	<meta name="twitter:description" content={`${facts.postalCode} · ${facts.roomsType} · ${facts.livingAreaM2} m²`} />
+	<meta name="twitter:image" content={ogImageUrl} />
 </svelte:head>
 
 <article>
@@ -79,7 +101,50 @@
 		</ul>
 	</section>
 
-	<a class="back" href="/">← Takaisin hakuun</a>
+	{#if yieldResult}
+		<section class="yield card">
+			<h2>Vuokratuotto</h2>
+			<dl class="yield-grid">
+				<div>
+					<dt>Bruttotuotto</dt>
+					<dd>{String(yieldResult.grossYieldPct).replace('.', ',')} <span class="unit">%</span></dd>
+				</div>
+				<div>
+					<dt>Nettotuotto</dt>
+					<dd>{String(yieldResult.netYieldPct).replace('.', ',')} <span class="unit">%</span></dd>
+				</div>
+				<div>
+					<dt>Nettokassavirta / kk</dt>
+					<dd>{fmt.format(yieldResult.monthlyNetEur)} <span class="unit">€</span></dd>
+				</div>
+				<div>
+					<dt>Remonttivaraus / v</dt>
+					<dd>{fmt.format(yieldResult.reserveEurYr)} <span class="unit">€ (oletus)</span></dd>
+				</div>
+			</dl>
+			<p class="yield-note">
+				Laskelma sisältää varainsiirtoveron 1,5 % (vero.fi 2026). Remonttivaraus on
+				oletusarvo, ei tilastoista laskettu — vähennä se todellisesta tuotosta tai
+				syötä tarkempi luku. {yieldResult.rentSource === 'estimate'
+					? `Vuokra on alueen tilastollinen arvio${rentEstimate?.tier === 'town' ? ' (kunnan taso)' : rentEstimate?.tier === 'mk' ? ' (maakunnan taso)' : ''}${rentEstimate?.latestQuarter ? `, viimeisin ${rentEstimate.latestQuarter}` : ''}.`
+					: ''}
+			</p>
+			{#if yieldResult.flags.length}
+				<ul class="yield-flags">
+					{#each yieldResult.flags as flag (flag)}
+						<li>{flag}</li>
+					{/each}
+				</ul>
+			{/if}
+		</section>
+	{/if}
+
+	<div class="footer-row">
+		<button class="share" type="button" onclick={copyShareLink}>
+			{#if copyState === 'copied'}Linkki kopioitu{:else if copyState === 'error'}Kopiointi epäonnistui{:else}Kopioi linkki / Jaa{/if}
+		</button>
+		<a class="back" href="/">← Takaisin hakuun</a>
+	</div>
 </article>
 
 <style>
@@ -225,6 +290,75 @@
 	}
 	.back:hover {
 		color: var(--ink);
+	}
+
+	.footer-row {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 1rem;
+		margin-top: 2rem;
+		flex-wrap: wrap;
+	}
+
+	.share {
+		background: var(--ink);
+		color: var(--surface);
+		border: none;
+		padding: 0.6rem 1rem;
+		font: inherit;
+		font-weight: 500;
+		font-size: var(--text-md);
+		border-radius: var(--radius-pill);
+		cursor: pointer;
+		transition: opacity 0.15s ease;
+	}
+	.share:hover {
+		opacity: 0.85;
+	}
+
+	.yield-grid {
+		display: grid;
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		gap: 0.75rem;
+		margin: 0 0 1rem;
+	}
+	.yield-grid div {
+		background: var(--surface);
+		border: 1px solid var(--line);
+		border-radius: var(--radius-md);
+		padding: 1rem 1.15rem;
+	}
+
+	.yield-note {
+		color: var(--ink-3);
+		font-size: var(--text-sm);
+		line-height: var(--lh-body);
+		margin: 0 0 0.75rem;
+		max-width: 42rem;
+	}
+
+	.yield-flags {
+		margin: 0;
+		padding-left: 1.25rem;
+		color: var(--ink-2);
+		display: flex;
+		flex-direction: column;
+		gap: 0.35rem;
+		max-width: 42rem;
+		line-height: var(--lh-list);
+		font-size: var(--text-sm);
+	}
+
+	@media (max-width: 720px) {
+		.yield-grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+	@media (max-width: 420px) {
+		.yield-grid {
+			grid-template-columns: 1fr;
+		}
 	}
 
 	@media (max-width: 720px) {

@@ -8,6 +8,7 @@ import {
 	allowedListingUrl, deriveInsights, htmlToText, parseListingText,
 	type ExtractedListing
 } from '$lib/server/listing-parse';
+import { estimateRent } from '$lib/server/rents';
 import type { ListingFacts } from '$lib/server/benchmark';
 import type { Actions, PageServerLoad } from './$types';
 

@@ -2,6 +2,23 @@
 	import { enhance } from '$app/forms';
 	let { data, form } = $props();
 	let activeInput = $state<'url' | 'text' | 'manual'>('url');
+
+	function prefillRent(event: SubmitEvent) {
+		const form = event.currentTarget as HTMLFormElement;
+		const pc = (form.elements.namedItem('pc') as HTMLInputElement)?.value?.trim();
+		const rt = (form.elements.namedItem('rt') as HTMLSelectElement)?.value;
+		const m2 = Number((form.elements.namedItem('m2') as HTMLInputElement)?.value);
+		const rentEl = form.elements.namedItem('rent') as HTMLInputElement | null;
+		if (!pc || !rt || !Number.isFinite(m2) || m2 < 10 || !rentEl || rentEl.value) return;
+		fetch(`/api/rent-estimate?pc=${encodeURIComponent(pc)}&rt=${encodeURIComponent(rt)}&m2=${m2}`)
+			.then((r) => (r.ok ? r.json() : null))
+			.then((d) => {
+				if (d && typeof d.monthlyRentEur === 'number') {
+					rentEl.value = String(d.monthlyRentEur);
+				}
+			})
+			.catch(() => {});
+	}
 </script>
 
 <svelte:head>
@@ -53,7 +70,7 @@
 	</div>
 
 	{#if activeInput === 'manual'}
-		<form method="GET" action="/arvio" class="manual-form">
+		<form method="GET" action="/arvio" class="manual-form" onsubmit={prefillRent}>
 			<h2 class="form-title">Anna kohteen perustiedot</h2>
 			<div class="manual-grid">
 				<label>
@@ -86,6 +103,14 @@
 				<label>
 					<span class="lbl">Rakennusvuosi <span class="opt">(valinnainen)</span></span>
 					<input name="yr" inputmode="numeric" type="number" min="1800" max="2030" placeholder="1961" />
+				</label>
+				<label>
+					<span class="lbl">Arvioitu vuokra <span class="unit">(€/kk)</span> <span class="opt">(valinnainen)</span></span>
+					<input name="rent" inputmode="numeric" type="number" step="10" min="100" max="20000" placeholder="950" />
+				</label>
+				<label>
+					<span class="lbl">Hoitovastike <span class="unit">(€/kk)</span> <span class="opt">(valinnainen)</span></span>
+					<input name="vastike" inputmode="numeric" type="number" step="10" min="0" max="5000" placeholder="280" />
 				</label>
 			</div>
 			<datalist id="known-pc">

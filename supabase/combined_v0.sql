@@ -62,3 +62,23 @@ create table if not exists scorecards (
 alter table reports enable row level security;
 alter table scorecards enable row level security;
 -- no public policies: server-side (service role) access only
+-- Rent estimate cache: from StatFin asvu 13eb (CC BY 4.0). Postal cells are
+-- direct; town cells are synthesized by /api/refresh as a transaction-weighted
+-- fall-back across populated postal cells in the same town (so the rents
+-- engine's tier chain has data even when a postal cell is suppressed).
+create table if not exists rents (
+  key text primary key,
+  postal_or_town text not null check (postal_or_town in ('postal', 'town')),
+  postal_code text,
+  rooms_type text not null check (rooms_type in ('yksiö', 'kaksio', 'kolmio+')),
+  benchmark_eur_m2_kk numeric,
+  n_4q integer not null default 0,
+  latest_quarter text,
+  series jsonb not null default '[]',
+  refreshed_at timestamptz not null default now()
+);
+create index if not exists rents_postal_code_idx on rents (postal_code);
+create index if not exists rents_rooms_type_idx on rents (rooms_type);
+alter table rents enable row level security;
+create policy "rents are public read" on rents for select using (true);
+-- writes are server-side (service role) only, via /api/refresh
