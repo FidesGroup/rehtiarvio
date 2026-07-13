@@ -159,22 +159,29 @@
 						</select>
 					{/snippet}
 				</Field>
-				<Field label="Rakennusvuosi" optional htmlFor="yr">
-					{#snippet children({ id })}
-						<input {id} name="yr" inputmode="numeric" type="number" min="1800" max="2030" placeholder="1961" value={cachedValues.yr ?? ''} />
-					{/snippet}
-				</Field>
-				<Field label="Arvioitu vuokra" optional helper="€/kk" htmlFor="rent">
-					{#snippet children({ id })}
-						<input {id} name="rent" inputmode="numeric" type="number" step="10" min="100" max="20000" placeholder="950" value={cachedValues.rent ?? ''} />
-					{/snippet}
-				</Field>
-				<Field label="Hoitovastike" optional helper="€/kk" htmlFor="vastike">
-					{#snippet children({ id })}
-						<input {id} name="vastike" inputmode="numeric" type="number" step="10" min="0" max="5000" placeholder="280" value={cachedValues.vastike ?? ''} />
-					{/snippet}
-				</Field>
 			</div>
+
+			<div class="form__optional">
+				<p class="form__optional-label">Valinnaiset — tarkentavat arviota</p>
+				<div class="form__grid">
+					<Field label="Rakennusvuosi" optional htmlFor="yr">
+						{#snippet children({ id })}
+							<input {id} name="yr" inputmode="numeric" type="number" min="1800" max="2030" placeholder="1961" value={cachedValues.yr ?? ''} />
+						{/snippet}
+					</Field>
+					<Field label="Arvioitu vuokra" optional helper="€/kk" htmlFor="rent">
+						{#snippet children({ id })}
+							<input {id} name="rent" inputmode="numeric" type="number" step="10" min="100" max="20000" placeholder="950" value={cachedValues.rent ?? ''} />
+						{/snippet}
+					</Field>
+					<Field label="Hoitovastike" optional helper="€/kk" htmlFor="vastike">
+						{#snippet children({ id })}
+							<input {id} name="vastike" inputmode="numeric" type="number" step="10" min="0" max="5000" placeholder="280" value={cachedValues.vastike ?? ''} />
+						{/snippet}
+					</Field>
+				</div>
+			</div>
+
 			<datalist id="known-pc">
 				{#each data.postalCodes as pc (pc)}<option value={pc}></option>{/each}
 			</datalist>
@@ -354,6 +361,20 @@
 		display: grid;
 		grid-template-columns: repeat(3, minmax(0, 1fr));
 		gap: 0.85rem 1rem;
+	}
+
+	.form__optional {
+		padding-top: 1rem;
+		border-top: 1px solid var(--border);
+	}
+
+	.form__optional-label {
+		font-size: var(--text-xs);
+		font-weight: 500;
+		color: var(--ink-3);
+		letter-spacing: var(--ls-wide);
+		text-transform: uppercase;
+		margin: 0 0 0.7rem;
 	}
 
 	.form__actions {

@@ -37,8 +37,8 @@ export const copy = {
 		supportedSources: 'Tuetut: Oikotie, Etuovi, Kiinteistömaailma, Remax (https).',
 
 		result: {
-			verdictOver: 'yli alueen toteutuneiden kauppojen',
-			verdictUnder: 'alle alueen toteutuneiden kauppojen',
+			verdictOver: 'kalliimpi kuin alueen toteutuneet kaupat',
+			verdictUnder: 'halvempi kuin alueen toteutuneet kaupat',
 			verdictNeutral: 'Suuntaa-antava arvio',
 			noVerdict: 'Ei vertailuarvoa',
 			noVerdictReason: 'tälle alueelle ja huonetyypille',
@@ -153,9 +153,7 @@ export const copy = {
 		title: 'Hintakartta',
 		h1: 'Toteutuneet neliöhinnat postinumeroalueittain',
 		lede: 'Klikkaa aluetta esitäyttääksesi vertailun.',
-		legendTitle: 'Väri = €/m²',
-		legend1: 'Tumma = kallis, vaalea = halpa',
-		legend2: 'Vaalea ääriviiva = ei julkaistua hintaa',
+		legendNoData: 'Katkoviivalla merkityltä alueelta ei ole julkaistua hintaa.',
 		attribution: 'Lähde: Tilastokeskus (13mt, CC BY 4.0).'
 	},
 
@@ -198,8 +196,8 @@ export const copy = {
 		howTitle: 'Miten vertailu toimii',
 		howSteps: [
 			'Liität ilmoituksen URL-osoitteen tai tekstin.',
-			'Järjestelmä poimii hinnan, pinta-alan, huoneluvun ja remontit.',
-			'Vertailemme postinumeroalueen toteutuneisiin kauppoihin (4 viimeisintä neljännestä).',
+			'Työkalu poimii hinnan, pinta-alan, huoneluvun ja remontit.',
+			'Se vertaa postinumeroalueen toteutuneisiin kauppoihin (4 viimeistä neljännestä).',
 			'Saat delta-prosentin ja luotettavuusluokan.'
 		],
 		howFallback: 'Jos kauppoja on alle 30, annamme kuntoon perustuvan haarukan — merkitty aina suuntaa-antavaksi.',

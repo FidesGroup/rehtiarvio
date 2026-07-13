@@ -128,6 +128,7 @@
 
 	.tier--featured {
 		border-color: var(--brand);
+		background: var(--surface-tint);
 		box-shadow: var(--shadow-md);
 	}
 
