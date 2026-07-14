@@ -204,37 +204,40 @@ export const copy = {
 
 	miksi: {
 		h1: 'Toteutuneet hinnat, ei markkinahypetystä.',
-		lede: 'Fides Groupin ilmainen työkalu. Data Tilastokeskukselta, ei mainoksia.',
-		dataTitle: 'Mistä data tulee',
+		lede: 'RehtiArvio kertoo ilmaiseksi, mitä asunnoista on oikeasti maksettu. Hinnat tulevat Tilastokeskukselta, eivät välittäjiltä. Ei mainoksia.',
+		dataTitle: 'Mistä hinnat tulevat',
+		dataIntro:
+			'Kaikki hinnat ovat Tilastokeskuksen keräämiä tietoja oikeista, jo tehdyistä asuntokaupoista. Emme käytä pyyntihintoja emmekä välittäjien arvioita.',
 		dataRows: [
-			{ code: '13mt', desc: 'Osakeasuntojen neliöhinnat postinumeroalueittain, neljännesvuosittain.' },
-			{ code: '15hw', desc: 'Omakotitalojen neliöhinnat aluetasolla, neljännesvuosittain.' },
-			{ code: 'asvu 13eb', desc: 'Asuntojen vuokrat postinumeroalueittain, neljännesvuosittain.' }
+			{ code: 'Kerros- ja rivitalot', desc: 'Toteutuneet kauppahinnat postinumeroalueittain.' },
+			{ code: 'Omakotitalot', desc: 'Toteutuneet kauppahinnat aluetasolla.' },
+			{ code: 'Vuokrat', desc: 'Keskivuokrat postinumeroalueittain.' }
 		],
-		dataNote: 'Lisenssin edellyttämä lähdemerkintä näkyy sivuston alatunnisteessa ja jokaisen luvun yhteydessä.',
+		dataNote:
+			'Hinnat päivittyvät neljä kertaa vuodessa, kun Tilastokeskus julkaisee uudet luvut. Tilastojen tunnisteet (13mt, 15hw, asvu 13eb) löytyvät sivun alatunnisteesta.',
 		howTitle: 'Miten vertailu toimii',
 		howSteps: [
-			'Liität ilmoituksen URL-osoitteen tai tekstin.',
-			'Työkalu poimii hinnan, pinta-alan, huoneluvun ja remontit.',
-			'Se vertaa postinumeroalueen toteutuneisiin kauppoihin (4 viimeistä neljännestä).',
-			'Saat eron alueen hintatasoon euroina ja tiedon, kuinka moneen kauppaan vertailu perustuu.'
+			'Liität myynti-ilmoituksen linkin tai tekstin.',
+			'Työkalu poimii ilmoituksesta hinnan, pinta-alan, huoneluvun ja remontit.',
+			'Se vertaa hintaa saman postinumeroalueen kauppoihin viimeisen vuoden ajalta.',
+			'Saat euroissa tiedon, onko pyyntihinta yli vai alle alueen tason, ja kuinka moneen kauppaan vertailu perustuu.'
 		],
-		howFallback: 'Jos kauppoja on alle 30, annamme kuntoon perustuvan haarukan, joka on aina merkitty suuntaa antavaksi.',
+		howFallback: 'Jos alueelta löytyy alle 30 kauppaa, annamme hinta-arvion asunnon kunnon perusteella. Se on aina merkitty suuntaa antavaksi.',
 		dontTitle: 'Mitä emme tee',
 		dontItems: [
-			'Ei arviolausuntoja tai sijoitusneuvontaa.',
-			'Ei kuntotarkastusta, se on ostajan tehtävä.',
-			'Ei mainoksia, ei datan myyntiä.',
-			'Ei ilmoitusten tai osoitteiden tallennusta.'
+			'Emme anna virallisia arviolausuntoja emmekä sijoitusneuvoja.',
+			'Emme tee kuntotarkastusta, se on ostajan tehtävä.',
+			'Emme näytä mainoksia emmekä myy tietojasi.',
+			'Emme tallenna ilmoituksia emmekä osoitteita.'
 		],
 		tierTitle: 'Kuinka luotettava vertailu on',
 		tiers: [
-			{ name: 'Tarkka vertailu', desc: 'Vähintään 30 kauppaa postinumeroalueelta. Vahva vertailu.' },
-			{ name: 'Aluevertailu', desc: 'Käytetään, kun postinumeroalueelta ei löydy tarpeeksi kauppoja.' },
-			{ name: 'Kuntoarvio', desc: 'Kuntoon perustuva haarukka. Aina merkitty suuntaa antavaksi.' }
+			{ name: 'Tarkka vertailu', desc: 'Asunnon omalta postinumeroalueelta löytyi vähintään 30 kauppaa. Luotettavin taso.' },
+			{ name: 'Aluevertailu', desc: 'Omalta alueelta ei löytynyt tarpeeksi kauppoja, joten vertaamme laajempaan alueeseen. Karkeampi taso.' },
+			{ name: 'Kuntoarvio', desc: 'Kauppoja on liian vähän vertailuun, joten annamme hintahaarukan asunnon kunnon perusteella. Aina suuntaa antava.' }
 		],
 		coverageTitle: 'Katettu alue',
-		coverageCount: (n: number) => `Postinumeroalueita: ${n.toLocaleString('fi-FI')}.`
+		coverageCount: (n: number) => `Vertailuhinnat kattavat ${n.toLocaleString('fi-FI')} postinumeroaluetta eri puolilla Suomea.`
 	},
 
 	tili: {

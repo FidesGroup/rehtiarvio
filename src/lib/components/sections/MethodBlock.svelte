@@ -9,9 +9,10 @@
 <div class="miksi" use:inview>
 	<Card>
 		{#snippet header()}<h2 class="h2">{copy.miksi.dataTitle}</h2>{/snippet}
+		<p class="intro">{copy.miksi.dataIntro}</p>
 		<table class="src">
 			<thead>
-				<tr><th>Taulukko</th><th>Sisältö</th></tr>
+				<tr><th>Asuntotyyppi</th><th>Mitä vertaamme</th></tr>
 			</thead>
 			<tbody>
 				{#each copy.miksi.dataRows as r (r.code)}
@@ -94,10 +95,15 @@
 	}
 
 	.src__code {
-		font-family: var(--font-mono);
 		font-weight: 600;
 		color: var(--brand);
-		white-space: nowrap;
+	}
+
+	.intro {
+		margin: 0 0 0.85rem;
+		color: var(--ink-2);
+		font-size: var(--text-md);
+		line-height: var(--lh-body);
 	}
 
 	.note {
@@ -162,7 +168,6 @@
 	}
 
 	.tier dt {
-		font-family: var(--font-mono);
 		font-weight: 600;
 		color: var(--brand);
 		margin: 0 0 0.3rem;
