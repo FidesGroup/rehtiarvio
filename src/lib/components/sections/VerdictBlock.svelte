@@ -1,9 +1,7 @@
 <script lang="ts">
 	import Card from '$lib/components/ui/Card.svelte';
-	import Crumbs from '$lib/components/ui/Crumbs.svelte';
 	import ConfidenceChip from '$lib/components/ui/ConfidenceChip.svelte';
 	import DeltaBadge from '$lib/components/ui/DeltaBadge.svelte';
-	import Stat from '$lib/components/ui/Stat.svelte';
 	import { inview } from '$lib/styles/actions';
 	import { copy } from '$lib/copy/fi';
 
@@ -12,31 +10,15 @@
 	let {
 		verdict,
 		tier,
-		facts,
-		location = null,
-		extracted = null,
-		source = null
+		facts
 	}: {
 		verdict: { deltaPct: number | null; listingEurM2: number; benchmarkEurM2: number | null; confidence: string; flags: string[]; transactions4q?: number; latestQuarter?: string | null };
 		tier: { tier: Tier; confidenceLabel: string; transactionsOrEvidence: number; estLowEurM2?: number; estMidEurM2?: number; estHighEurM2?: number; assumptions?: string[] } | null;
 		facts: { postalCode: string; livingAreaM2: number; priceEur: number; roomsType?: string | null; buildYear?: number | null };
-		location?: {
-			eurM2: number;
-			deltaPct: number;
-			areasUsed: { pc: string; nimi: string; eurM2: number; km: number }[];
-		} | null;
-		extracted?: { address?: string | null; propertyClass?: string | null } | null;
-		source?: string | null;
 	} = $props();
 
 	const fmt = new Intl.NumberFormat('fi-FI');
-	const CLASS_LABELS: Record<string, string> = {
-		kerrostalo: 'kerrostalo', rivitalo: 'rivitalo',
-		omakotitalo: 'omakotitalo', paritalo: 'paritalo', muu: 'muu kohde'
-	};
 
-	// Euro difference from the existing deltaPct (in percent units) and priceEur.
-	// Guarded against the no-benchmark (T4) and null-delta cases per CLAUDE.md rule 4.
 	const eurDiff = $derived.by(() => {
 		if (verdict.deltaPct === null) return null;
 		if (tier?.tier === 'T4') return null;
@@ -50,24 +32,10 @@
 	const eurHeadline = $derived.by(() => {
 		if (eurDiff === null) return null;
 		const abs = fmt.format(Math.abs(eurDiff));
-		if (eurDiff === 0) return `Pyyntihinta on linjassa alueen toteutuneiden kauppojen kanssa.`;
+		if (eurDiff === 0) return 'Pyyntihinta on linjassa alueen toteutuneiden kauppojen kanssa.';
 		return eurDiff > 0
 			? copy.landing.result.verdictEurOver(abs)
 			: copy.landing.result.verdictEurUnder(abs);
-	});
-
-	const verdictSentence = $derived.by(() => {
-		if (eurHeadline) return '';
-		if (verdict.deltaPct === null) return copy.landing.result.noVerdictReason;
-		if (tier?.tier === 'T4') return copy.landing.result.estimateReason;
-		return verdict.deltaPct >= 0 ? copy.landing.result.verdictOver : copy.landing.result.verdictUnder;
-	});
-
-	const headline = $derived.by(() => {
-		if (eurHeadline) return eurHeadline;
-		if (verdict.deltaPct === null) return copy.landing.result.noVerdict;
-		if (tier?.tier === 'T4') return copy.landing.result.verdictNeutral;
-		return '';
 	});
 
 	const tierDescription = $derived.by(() => {
@@ -78,161 +46,196 @@
 	});
 </script>
 
-<article class="result" use:inview>
-	<Crumbs
-		parts={[
-			extracted?.address ?? null,
-			facts.postalCode,
-			extracted?.propertyClass ? CLASS_LABELS[extracted.propertyClass] : null,
-			facts.roomsType,
-			`${facts.livingAreaM2} m²`,
-			facts.buildYear ? `rak. ${facts.buildYear}` : null,
-			source ? `lähde ${source}` : null
-		]}
-	/>
+<Card variant="default" inview>
+	<p class="result__source">Lähde: Tilastokeskus 13mt · 4 viimeistä neljännestä</p>
 
-	<header class="result__head">
-		<p class="result__source">Lähde: Tilastokeskus 13mt · 4 viimeistä neljännestä</p>
-		<DeltaBadge delta={verdict.deltaPct} size="hero" />
-		{#if headline}
-			<h2 class="result__headline result__quote">{headline}</h2>
-		{/if}
-		<p class="result__sentence">{verdictSentence}</p>
-	</header>
-
-	<div class="result__metrics">
-		<div class="metric">
-			<span class="metric__label">Kohteen neliöhinta</span>
-			<span class="metric__value num">{fmt.format(verdict.listingEurM2)}<span class="metric__unit">€/m²</span></span>
+	<div class="result__row">
+		<div class="result__delta">
+			<DeltaBadge delta={verdict.deltaPct} size="hero" />
 		</div>
-		<div class="metric metric--alt">
-			<span class="metric__label">Alueen kaupat</span>
-			<span class="metric__value num">
-				{#if verdict.benchmarkEurM2}
-					{fmt.format(verdict.benchmarkEurM2)}<span class="metric__unit">€/m²</span>
-				{:else}
-					<span class="metric__dash">–</span>
-				{/if}
-			</span>
+		<div class="result__sentence">
+			{#if eurHeadline}
+				<p class="result__headline">{eurHeadline}</p>
+			{:else}
+				<p class="result__headline result__headline--neutral">{copy.landing.result.verdictNeutral}</p>
+				<p class="result__sub">
+					{verdict.deltaPct === null
+						? copy.landing.result.noVerdictReason
+						: copy.landing.result.estimateReason}
+				</p>
+			{/if}
 		</div>
-		<div class="metric metric--chip">
-			<span class="metric__label">Luotettavuus</span>
+		<div class="result__confidence">
 			<ConfidenceChip
 				value={verdict.confidence}
 				transactions={verdict.transactions4q}
 				latestQuarter={verdict.latestQuarter}
 			/>
 			{#if tierDescription}
-				<span class="metric__tier">{tierDescription}</span>
+				<span class="result__tier">{tierDescription}</span>
 			{/if}
 		</div>
 	</div>
-</article>
+
+	<dl class="result__stats">
+		<div class="stat">
+			<dt class="stat__label">{copy.landing.result.statListing}</dt>
+			<dd class="stat__value num">{fmt.format(verdict.listingEurM2)}<span class="stat__unit">€/m²</span></dd>
+		</div>
+		<div class="stat">
+			<dt class="stat__label">{copy.landing.result.statBenchmark}</dt>
+			<dd class="stat__value num">
+				{#if verdict.benchmarkEurM2}
+					{fmt.format(verdict.benchmarkEurM2)}<span class="stat__unit">€/m²</span>
+				{:else}
+					<span class="stat__dash">–</span>
+				{/if}
+			</dd>
+		</div>
+		<div class="stat">
+			<dt class="stat__label">{copy.landing.result.statConfidence}</dt>
+			<dd class="stat__value stat__value--text">{copy.landing.result.confidence[verdict.confidence as 'korkea' | 'kohtalainen' | 'matala'] ?? verdict.confidence}</dd>
+		</div>
+	</dl>
+</Card>
 
 <style>
-	.result {
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-5);
-	}
-
-	.result__head {
-		display: flex;
-		flex-direction: column;
-		gap: 0.5rem;
-	}
-
 	.result__source {
 		font-size: var(--text-xs);
 		font-weight: 500;
 		color: var(--ink-3);
 		letter-spacing: var(--ls-wide);
 		text-transform: uppercase;
-		margin: 0;
+		margin: 0 0 1rem;
 		padding-top: 0.85rem;
 		border-top: 1px solid var(--border);
 	}
 
-	.result__headline {
-		font-size: var(--text-2xl);
-		font-weight: 600;
-		letter-spacing: var(--ls-tight);
-		margin: 0.5rem 0 0;
-		font-variant-numeric: tabular-nums;
+	.result__row {
+		display: grid;
+		grid-template-columns: auto 1fr auto;
+		align-items: center;
+		gap: 1.5rem 2rem;
+		margin-bottom: 1.5rem;
 	}
 
-	.result__quote {
-		padding-left: 0.85rem;
-		border-left: 1px solid var(--ink);
+	.result__delta {
+		display: flex;
+		align-items: center;
 	}
 
 	.result__sentence {
-		color: var(--ink-2);
-		font-size: var(--text-md);
-		line-height: var(--lh-body);
-		max-width: 38rem;
+		min-width: 0;
+	}
+
+	.result__headline {
+		font-size: var(--text-xl);
+		line-height: var(--lh-snug);
+		font-weight: 600;
+		letter-spacing: var(--ls-tight);
 		margin: 0;
 		font-variant-numeric: tabular-nums;
 	}
 
-	.result__metrics {
-		display: grid;
-		grid-template-columns: repeat(3, minmax(0, 1fr));
-		gap: 0.85rem;
+	.result__headline--neutral {
+		font-size: var(--text-lg);
+		color: var(--ink-2);
 	}
 
-	.metric {
+	.result__sub {
+		color: var(--ink-3);
+		font-size: var(--text-sm);
+		margin: 0.4rem 0 0;
+		line-height: var(--lh-list);
+	}
+
+	.result__confidence {
 		display: flex;
 		flex-direction: column;
+		align-items: flex-end;
 		gap: 0.35rem;
-		padding: 1.1rem 1.25rem;
-		background: var(--surface);
-		border: 1px solid var(--border);
-		border-radius: var(--radius-md);
 		min-width: 0;
 	}
 
-	.metric--alt { background: var(--surface-tint); border-color: transparent; }
-
-	.metric--chip {
-		gap: 0.5rem;
+	.result__tier {
+		font-size: var(--text-xs);
+		color: var(--ink-3);
+		line-height: var(--lh-list);
+		max-width: 18rem;
+		text-align: right;
 	}
 
-	.metric__label {
+	.result__stats {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 0;
+		margin: 0;
+		padding: 1rem 0 0;
+		border-top: 1px solid var(--border);
+	}
+
+	.stat {
+		display: flex;
+		flex-direction: column;
+		gap: 0.3rem;
+		padding: 0 1.25rem;
+	}
+
+	.stat + .stat {
+		border-left: 1px solid var(--border);
+	}
+
+	.stat__label {
 		font-size: var(--text-xs);
 		font-weight: 500;
-		color: var(--ink-2);
+		color: var(--ink-3);
 		letter-spacing: var(--ls-wide);
 		text-transform: uppercase;
+		margin: 0;
 	}
 
-	.metric__value {
-		font-size: var(--text-2xl);
+	.stat__value {
+		font-size: var(--text-xl);
 		font-weight: 600;
 		letter-spacing: var(--ls-tight);
 		color: var(--ink);
+		margin: 0;
 		display: inline-flex;
 		align-items: baseline;
 		gap: 0.15rem;
 	}
 
-	.metric__unit {
+	.stat__value--text {
+		font-size: var(--text-md);
+		text-transform: capitalize;
+	}
+
+	.stat__unit {
 		font-size: 0.55em;
 		color: var(--ink-2);
 		font-weight: 500;
 	}
 
-	.metric__dash {
+	.stat__dash {
 		color: var(--ink-3);
-	}
-
-	.metric__tier {
-		font-size: var(--text-xs);
-		color: var(--ink-3);
-		line-height: var(--lh-list);
 	}
 
 	@media (max-width: 720px) {
-		.result__metrics { grid-template-columns: 1fr; }
+		.result__row {
+			grid-template-columns: 1fr;
+			gap: 0.75rem;
+		}
+		.result__delta { justify-content: flex-start; }
+		.result__confidence { align-items: flex-start; }
+		.result__tier { text-align: left; max-width: none; }
+		.result__stats { grid-template-columns: 1fr; }
+		.stat + .stat {
+			border-left: 0;
+			border-top: 1px solid var(--border);
+			padding-top: 0.85rem;
+		}
+		.stat { padding: 0; }
+		.stat + .stat { margin-top: 0.85rem; }
+		.stat:first-child { padding-top: 0.85rem; }
 	}
 </style>
