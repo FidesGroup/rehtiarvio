@@ -5,7 +5,8 @@
 	import Button from '$lib/components/ui/Button.svelte';
 	import HeroAnalyzer from '$lib/components/sections/HeroAnalyzer.svelte';
 	import VerdictBlock from '$lib/components/sections/VerdictBlock.svelte';
-	import MiniMap from '$lib/components/MiniMap.svelte';
+	import { goto } from '$app/navigation';
+	import PriceMap from '$lib/PriceMap.svelte';
 	import FeatureGrid from '$lib/components/sections/FeatureGrid.svelte';
 	import { copy } from '$lib/copy/fi';
 
@@ -30,7 +31,7 @@
 	<HeroAnalyzer {data} {form} />
 	<aside class="hero-grid__map" aria-label={copy.landing.priceMap.title}>
 		<figure class="mapfig">
-			<MiniMap centroids={data.centroids} />
+			<PriceMap height="26rem" zoom={3.4} center={[26, 64.6]} showLegend={false} onareaclick={(pc) => goto(`/?pc=${pc}`)} />
 			<figcaption class="mapfig__cap">
 				<span class="mapfig__source">{copy.landing.priceMap.source}</span>
 				<span class="mapfig__hint">{copy.landing.priceMap.hint}</span>
@@ -133,9 +134,9 @@
 		.hero-grid {
 			grid-template-columns: 1fr;
 		}
+		/* Mobile gets no landing map — /kartta is the map surface there. */
 		.hero-grid__map {
-			max-width: 24rem;
-			padding-top: 0;
+			display: none;
 		}
 	}
 
