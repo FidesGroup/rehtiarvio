@@ -3,9 +3,10 @@
  * a React-like element tree and renders it to a PNG. We use createElement
  * instead of JSX so the file can be plain .ts and survive svelte-check.
  *
- * Design rules: CLAUDE.md rule 10 — square corners, Baltic petrol accent,
- * copper / pine for over/under market, no gradient, no emoji section markers.
- * Attribution: "Lähde: Tilastokeskus, 13mt" must appear (CLAUDE.md rule 2).
+ * Design rules: CLAUDE.md rule 10 -- square corners, ink editorial palette,
+ * signal red / signal green for over / under market, no gradient, no emoji
+ * section markers. Attribution: "Lähde: Tilastokeskus, 13mt" must appear
+ * (CLAUDE.md rule 2). Color is reserved for data direction.
  */
 
 // Satori expects a React-like element tree. The shape is structurally compatible
@@ -13,13 +14,13 @@
 // project dep (it is bundled inside @vercel/og at runtime).
 type OgNode = unknown;
 
-const BG = '#f5f4ee';
-const INK = '#101414';
-const INK_2 = '#4a5252';
-const INK_3 = '#7a8080';
-const LINE = '#e0ddd1';
-const OVER = '#a4512e';
-const UNDER = '#2e6b46';
+const BG = '#fafaf7';
+const INK = '#0a0a0a';
+const INK_2 = '#4a4a4a';
+const INK_3 = '#7a7a7a';
+const LINE = '#d8d4ca';
+const OVER = '#b3261e';
+const UNDER = '#1d6f3a';
 
 export interface OgTemplateInput {
 	postalCode: string;
