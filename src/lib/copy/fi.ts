@@ -303,6 +303,8 @@ export const copy = {
 		generic: 'Jokin meni vikaan.',
 		reportNeedSub: 'Taloyhtiöraportit kuuluvat RehtiArvio-tilaukseen. Tilaa /tilaa-sivulta, tai jos olet jo tilannut, avaa /tili samalla selaimella.',
 		reportNeedTarget:
-			'Taloyhtiöraportti tarvitsee taloyhtiön nimen tai osoitteen. Analysoi ilmoitus ensin.'
+			'Taloyhtiöraportti tarvitsee taloyhtiön nimen tai osoitteen. Analysoi ilmoitus ensin.',
+		docsUnparsed:
+			'Liittämästäsi tekstistä ei löytynyt taloyhtiön talouslukuja (vastikkeet, lainaosuus, korjaukset). Tarkista että kopioit isännöitsijäntodistuksen tekstin — tai tyhjennä kenttä ja tilaa raportti ilman asiakirjoja.'
 	}
 };
