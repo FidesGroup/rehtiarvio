@@ -16,13 +16,27 @@
 
 	const fmt = new Intl.NumberFormat('fi-FI');
 	const overUnder = $derived(verdict.deltaPct === null ? 'none' : verdict.deltaPct >= 0 ? 'over' : 'under');
-	const verdictLabel = $derived(
-		verdict.deltaPct === null
-			? 'Ei vertailuarvoa tälle alueelle.'
-			: verdict.deltaPct >= 0
-				? 'Pyyntihinta on alueen toteutuneiden kauppojen yläpuolella.'
-				: 'Pyyntihinta on alueen toteutuneiden kauppojen alapuolella.'
-	);
+	const eurDiff = $derived.by(() => {
+		if (verdict.deltaPct === null) return null;
+		if (!facts?.priceEur || !Number.isFinite(facts.priceEur)) return null;
+		const fraction = verdict.deltaPct / 100;
+		if (!Number.isFinite(fraction) || fraction <= -1) return null;
+		const raw = facts.priceEur - facts.priceEur / (1 + fraction);
+		return Math.round(raw / 1000) * 1000;
+	});
+	const verdictLabel = $derived.by(() => {
+		if (verdict.deltaPct === null) return copy.arvio.noVerdictLabel;
+		if (eurDiff !== null) {
+			const abs = fmt.format(Math.abs(eurDiff));
+			if (eurDiff === 0) return 'Pyyntihinta on linjassa alueen toteutuneiden kauppojen kanssa.';
+			return eurDiff > 0
+				? copy.landing.result.verdictEurOver(abs)
+				: copy.landing.result.verdictEurUnder(abs);
+		}
+		return verdict.deltaPct >= 0
+			? 'Pyyntihinta on alueen toteutuneiden kauppojen yläpuolella.'
+			: 'Pyyntihinta on alueen toteutuneiden kauppojen alapuolella.';
+	});
 	const shareUrl = $derived($page.url.toString());
 	const ogImageUrl = $derived(`/arvio/og?${$page.url.searchParams.toString()}`);
 
