@@ -25,6 +25,14 @@
 	lede={copy.kartta.lede}
 />
 
+<div class="kstats num" aria-label={copy.landing.market.eyebrow}>
+	<div class="kstat"><span class="kstat__lbl">{copy.kartta.statsTransactions}</span><span class="kstat__val">{fmt.format(data.market.totalTransactions)}</span></div>
+	<div class="kstat"><span class="kstat__lbl">{copy.kartta.statsMedian}</span><span class="kstat__val">{fmt.format(data.market.medianEurM2)} <span class="kstat__unit">€/m²</span></span></div>
+	<div class="kstat"><span class="kstat__lbl">{copy.kartta.statsP25}</span><span class="kstat__val">{fmt.format(data.market.p25EurM2)} <span class="kstat__unit">€/m²</span></span></div>
+	<div class="kstat"><span class="kstat__lbl">{copy.kartta.statsP75}</span><span class="kstat__val">{fmt.format(data.market.p75EurM2)} <span class="kstat__unit">€/m²</span></span></div>
+	<div class="kstat"><span class="kstat__lbl">{copy.kartta.statsAreas}</span><span class="kstat__val">{fmt.format(data.market.areasWithData)}</span></div>
+</div>
+
 <Card padded={false} variant="raised">
 	<PriceMap onareaclick={(pc) => goto(`/?pc=${pc}`)} />
 </Card>
@@ -68,6 +76,27 @@
 <p class="attr">{copy.kartta.attribution}</p>
 
 <style>
+	.kstats {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1rem 2rem;
+		margin: 0 0 var(--space-5);
+		padding-bottom: 1rem;
+		border-bottom: 1px solid var(--border);
+		max-width: var(--container-app);
+	}
+	.kstat { display: flex; flex-direction: column; gap: 0.1rem; }
+	.kstat__lbl {
+		font-size: var(--text-xs);
+		font-weight: 500;
+		color: var(--ink-3);
+		letter-spacing: var(--ls-wide);
+		text-transform: uppercase;
+	}
+	.kstat__val { font-size: var(--text-lg); font-weight: 600; font-variant-numeric: tabular-nums; }
+	.kstat__unit { font-size: var(--text-sm); font-weight: 500; color: var(--ink-2); }
+	@media (max-width: 720px) { .kstats { gap: 0.85rem 1.5rem; } }
+
 	.note {
 		display: flex;
 		align-items: center;

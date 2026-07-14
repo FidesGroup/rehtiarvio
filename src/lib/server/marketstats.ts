@@ -25,6 +25,8 @@ export interface MarketStats {
 	areasWithData: number;
 	totalTransactions: number;
 	medianEurM2: number;
+	p25EurM2: number;
+	p75EurM2: number;
 	topExpensive: AreaStat[];
 	topCheapest: AreaStat[];
 	/** distribution over the same €/m² bands as the map ramp */
@@ -51,6 +53,8 @@ export function marketStats(): MarketStats {
 	const eurs = rows.map((r) => r.eur).sort((a, b) => a - b);
 	const mid = Math.floor(eurs.length / 2);
 	const median = eurs.length % 2 ? eurs[mid] : Math.round((eurs[mid - 1] + eurs[mid]) / 2);
+	const p25 = eurs[Math.floor(eurs.length * 0.25)];
+	const p75 = eurs[Math.floor(eurs.length * 0.75)];
 
 	const ranked = rows.filter((r) => r.n >= RANK_MIN_N);
 	const byEurDesc = [...ranked].sort((a, b) => b.eur - a.eur);
@@ -75,6 +79,8 @@ export function marketStats(): MarketStats {
 		areasWithData: rows.length,
 		totalTransactions: rows.reduce((a, r) => a + r.n, 0),
 		medianEurM2: median,
+		p25EurM2: p25,
+		p75EurM2: p75,
 		topExpensive: byEurDesc.slice(0, TOP_COUNT),
 		topCheapest: byEurDesc.slice(-TOP_COUNT).reverse(),
 		bands

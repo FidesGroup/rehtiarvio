@@ -17,7 +17,7 @@ export const copy = {
 	},
 
 	landing: {
-		eyebrow: 'Ilmainen analyysi',
+		eyebrow: 'Hintavertailu tilastodatasta',
 		h1: 'Onko asunnon hinta kohdallaan?',
 		lede: 'Liitä myynti-ilmoitus, niin saat vertailun Tilastokeskuksen toteutuneisiin kauppoihin postinumeroalueittain.',
 
@@ -120,6 +120,9 @@ export const copy = {
 			source: 'Lähde: Tilastokeskus 13mt'
 		},
 
+		methodNote:
+			'Menetelmä: kohteen neliöhintaa verrataan alueen toteutuneiden kauppojen kauppamäärillä painotettuun keskiarvoon neljältä viimeiseltä neljännekseltä. Luotettavuusluokka määräytyy vertailukauppojen määrästä.',
+
 		waitlist: {
 			eyebrow: 'Tulossa',
 			title: 'Taloyhtiöraportti',
@@ -169,6 +172,16 @@ export const copy = {
 			source: 'Lähde: Tilastokeskus 13mt',
 			partialNote: 'Viimeisin vuosi voi olla vajaa.'
 		},
+		method: {
+			title: 'Näin luku lasketaan',
+			items: [
+				'Kohteen neliöhinta = velaton hinta jaettuna asuinpinta-alalla.',
+				'Vertailutaso on postinumeroalueen toteutuneiden kauppojen kauppamäärillä painotettu keskihinta neljältä viimeiseltä neljännekseltä (Tilastokeskus 13mt).',
+				'Jos omalta alueelta on alle 30 kauppaa, vertailu laajenee kuntatasolle ja luotettavuusluokka laskee.',
+				'Tilastokeskus ei julkaise alle 20 kaupan soluja — puuttuvaa arvoa ei koskaan korvata toisella luvulla.',
+				'Ero ilmoitetaan aina yhdessä luotettavuusluokan ja tulkinnan varausten kanssa, ei pelkkänä prosenttina.'
+			]
+		},
 		back: '← Takaisin hakuun',
 		ogFallback: 'Toteutuneet hinnat, ei mielipiteet.'
 	},
@@ -185,6 +198,11 @@ export const copy = {
 		bandsUnit: 'postinumeroalueet hintaluokittain',
 		bandsAreas: 'aluetta',
 		bandsTransactions: 'kauppaa',
+		statsMedian: 'Mediaani',
+		statsP25: 'Alakvartiili',
+		statsP75: 'Yläkvartiili',
+		statsTransactions: 'Kauppoja / 4 nelj.',
+		statsAreas: 'Alueita',
 		topExpensive: 'Kalleimmat alueet',
 		topCheapest: 'Edullisimmat alueet',
 		topHint: 'Vähintään 10 kauppaa neljällä neljänneksellä. Klikkaa riviä esitäyttääksesi vertailun.',

@@ -159,6 +159,15 @@
 		</ul>
 	</Card>
 
+	<Card>
+		{#snippet header()}<h2 class="card__h">{copy.arvio.method.title}</h2>{/snippet}
+		<ol class="method">
+			{#each copy.arvio.method.items as item, i (i)}
+				<li>{item}</li>
+			{/each}
+		</ol>
+	</Card>
+
 	{#await data.lazy.history then history}
 		{#if history}
 			<Card>
@@ -366,6 +375,21 @@
 		gap: 0.45rem;
 		color: var(--ink-2);
 		line-height: var(--lh-list);
+	}
+
+	.method {
+		margin: 0;
+		padding-left: 1.25rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.45rem;
+		color: var(--ink-2);
+		line-height: var(--lh-list);
+		font-size: var(--text-sm);
+	}
+	.method li::marker {
+		color: var(--ink-3);
+		font-weight: 600;
 	}
 
 	.notes li::marker {

@@ -97,6 +97,8 @@
 			<dd class="stat__value stat__value--text">{copy.landing.result.confidence[verdict.confidence as 'korkea' | 'kohtalainen' | 'matala'] ?? verdict.confidence}</dd>
 		</div>
 	</dl>
+
+	<p class="vmethod">{copy.landing.methodNote}</p>
 </Card>
 
 <style>
@@ -218,6 +220,15 @@
 
 	.stat__dash {
 		color: var(--ink-3);
+	}
+
+	.vmethod {
+		margin: 0.85rem 0 0;
+		padding-top: 0.7rem;
+		border-top: 1px solid var(--border);
+		font-size: var(--text-xs);
+		color: var(--ink-3);
+		line-height: var(--lh-list);
 	}
 
 	@media (max-width: 720px) {

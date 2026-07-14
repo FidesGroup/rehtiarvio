@@ -70,6 +70,7 @@
 		</div>
 	</div>
 	<p class="market__src">{copy.landing.market.source}</p>
+	<p class="market__method">{copy.landing.methodNote}</p>
 </section>
 
 <CaseGrid examples={data.examples} />
@@ -230,6 +231,13 @@
 		color: var(--ink-3);
 		letter-spacing: var(--ls-wide);
 		text-transform: uppercase;
+	}
+
+	.market__method {
+		margin: 0;
+		font-size: var(--text-sm);
+		color: var(--ink-2);
+		line-height: var(--lh-list);
 	}
 
 	@media (max-width: 720px) {
