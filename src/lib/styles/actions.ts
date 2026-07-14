@@ -1,17 +1,17 @@
 /**
- * Action: adds `data-inview="true"` when the node enters viewport. Use with the
+ * Action: adds the `in` class when the node enters viewport. Use with the
  * `.reveal` class in app.css to fade-up on scroll.
  */
 export function inview(node: HTMLElement, options: IntersectionObserverInit = {}) {
 	if (typeof window === 'undefined' || !('IntersectionObserver' in window)) {
-		node.dataset.inview = 'true';
+		node.classList.add('in');
 		return {};
 	}
 	const observer = new IntersectionObserver(
 		(entries) => {
 			for (const entry of entries) {
 				if (entry.isIntersecting) {
-					node.dataset.inview = 'true';
+					node.classList.add('in');
 					observer.unobserve(node);
 				}
 			}
