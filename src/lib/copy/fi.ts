@@ -83,7 +83,8 @@ export const copy = {
 			eyebrow: 'Datasta',
 			title: 'Postinumeroalueiden neliöhinnat',
 			source: 'Lähde: Tilastokeskus 13mt · 4 viimeistä neljännestä',
-			hint: 'Vie hiiri postinumeron päälle nähdäksesi tarkan hinnan.'
+			hint: 'Tummempi piste = korkeampi neliöhinta.',
+			openFull: 'Avaa koko hintakartta →'
 		},
 
 		features: {
@@ -136,6 +137,9 @@ export const copy = {
 		h1: 'Toteutuneet neliöhinnat postinumeroalueittain',
 		lede: 'Klikkaa aluetta esitäyttääksesi vertailun.',
 		legendNoData: 'Katkoviivalla merkityltä alueelta ei ole julkaistua hintaa.',
+		tapHint: 'Napauta aluetta nähdäksesi hinnan.',
+		panelUse: 'Käytä vertailussa',
+		panelClose: 'Sulje tietoruutu',
 		attribution: 'Lähde: Tilastokeskus (13mt, CC BY 4.0).'
 	},
 

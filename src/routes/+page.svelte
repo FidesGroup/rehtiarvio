@@ -5,7 +5,7 @@
 	import Button from '$lib/components/ui/Button.svelte';
 	import HeroAnalyzer from '$lib/components/sections/HeroAnalyzer.svelte';
 	import VerdictBlock from '$lib/components/sections/VerdictBlock.svelte';
-	import PriceMapSection from '$lib/components/sections/PriceMapSection.svelte';
+	import MiniMap from '$lib/components/MiniMap.svelte';
 	import FeatureGrid from '$lib/components/sections/FeatureGrid.svelte';
 	import { copy } from '$lib/copy/fi';
 
@@ -26,13 +26,23 @@
 	/>
 </svelte:head>
 
-<HeroAnalyzer {data} {form} />
+<div class="hero-grid">
+	<HeroAnalyzer {data} {form} />
+	<aside class="hero-grid__map" aria-label={copy.landing.priceMap.title}>
+		<figure class="mapfig">
+			<MiniMap centroids={data.centroids} />
+			<figcaption class="mapfig__cap">
+				<span class="mapfig__source">{copy.landing.priceMap.source}</span>
+				<span class="mapfig__hint">{copy.landing.priceMap.hint}</span>
+				<a class="mapfig__link" href="/kartta">{copy.landing.priceMap.openFull}</a>
+			</figcaption>
+		</figure>
+	</aside>
+</div>
 
 {#if hasResult && form?.facts && form?.verdict}
 	<VerdictBlock verdict={form.verdict} {tier} facts={form.facts} />
 {/if}
-
-<PriceMapSection centroids={data.centroids} />
 
 <FeatureGrid />
 
@@ -71,6 +81,64 @@
 </form>
 
 <style>
+	.hero-grid {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) clamp(16rem, 30%, 21rem);
+		gap: var(--space-7) var(--space-9);
+		align-items: start;
+		margin-bottom: var(--space-9);
+	}
+
+	/* Optically align the map top with the hero eyebrow. */
+	.hero-grid__map {
+		padding-top: var(--space-5);
+	}
+
+	.mapfig {
+		display: flex;
+		flex-direction: column;
+		gap: 0.6rem;
+		margin: 0;
+	}
+
+	.mapfig__cap {
+		display: flex;
+		flex-direction: column;
+		gap: 0.2rem;
+		padding-top: 0.7rem;
+		border-top: 1px solid var(--border);
+	}
+
+	.mapfig__source {
+		font-size: var(--text-xs);
+		font-weight: 500;
+		color: var(--ink-3);
+		letter-spacing: var(--ls-wide);
+		text-transform: uppercase;
+	}
+
+	.mapfig__hint {
+		font-size: var(--text-xs);
+		color: var(--ink-3);
+	}
+
+	.mapfig__link {
+		font-size: var(--text-sm);
+		color: var(--ink-2);
+		margin-top: 0.35rem;
+		align-self: flex-start;
+	}
+
+	@media (max-width: 900px) {
+		.hero-grid {
+			grid-template-columns: 1fr;
+		}
+		.hero-grid__map {
+			max-width: 24rem;
+			padding-top: 0;
+		}
+	}
+
 	.waitlist {
 		display: flex;
 		flex-wrap: wrap;
@@ -97,7 +165,7 @@
 		padding-bottom: 0.35rem;
 	}
 
-	@media (max-width: 560px) {
+	@media (max-width: 480px) {
 		.waitlist {
 			flex-direction: column;
 			align-items: stretch;

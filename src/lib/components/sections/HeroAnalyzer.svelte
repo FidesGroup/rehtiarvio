@@ -181,7 +181,6 @@
 		flex-direction: column;
 		gap: 1.25rem;
 		padding-top: var(--space-5);
-		margin-bottom: var(--space-9);
 	}
 
 	.hero__eyebrow {
@@ -267,7 +266,12 @@
 		color: var(--brand);
 		background: transparent;
 		border: none;
-		padding: 0;
+		/* 44px hit area without disturbing the vertical rhythm. */
+		padding: 0.65rem 0;
+		margin: -0.45rem 0;
+		min-height: 44px;
+		display: inline-flex;
+		align-items: center;
 		cursor: pointer;
 		text-align: left;
 		text-decoration: underline;
@@ -280,7 +284,11 @@
 		text-decoration-color: var(--brand);
 	}
 
-	@media (max-width: 560px) {
+	@media (max-width: 720px) {
+		.form__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+	}
+
+	@media (max-width: 480px) {
 		.form__grid { grid-template-columns: 1fr; }
 	}
 </style>

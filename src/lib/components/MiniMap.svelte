@@ -16,9 +16,9 @@
 	}
 	let {
 		centroids,
-		size = 320,
+		maxWidth = '100%',
 		compact = false
-	}: { centroids: Record<string, Centroid>; size?: number; compact?: boolean } = $props();
+	}: { centroids: Record<string, Centroid>; maxWidth?: string; compact?: boolean } = $props();
 
 	const LON_MIN = 19.59;
 	const LON_MAX = 31.33;
@@ -71,7 +71,7 @@
 	let hovered = $state<Point | null>(null);
 </script>
 
-<div class="mmap" class:mmap--compact={compact} style="--mmap-size: {size}px">
+<div class="mmap" class:mmap--compact={compact} style="--mmap-max: {maxWidth}">
 	<svg
 		viewBox="0 0 {W} {H}"
 		role="img"
@@ -125,9 +125,9 @@
 <style>
 	.mmap {
 		position: relative;
-		width: var(--mmap-size);
-		height: calc(var(--mmap-size) * 1.33);
-		max-width: 100%;
+		width: 100%;
+		max-width: var(--mmap-max, 100%);
+		aspect-ratio: 600 / 800;
 		border: 1px solid var(--border-2);
 		border-radius: var(--radius-lg);
 		background: var(--ink);
