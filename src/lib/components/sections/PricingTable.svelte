@@ -232,7 +232,7 @@
 		margin: 0 0 var(--space-5);
 	}
 
-	@media (max-width: 860px) {
+	@media (max-width: 900px) {
 		.pricing { grid-template-columns: 1fr; }
 	}
 

@@ -83,7 +83,7 @@
 		margin-top: 1rem;
 	}
 
-	@media (max-width: 560px) {
+	@media (max-width: 480px) {
 		.card--padded {
 			padding: 1.25rem 1.4rem;
 		}

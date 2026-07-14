@@ -30,7 +30,7 @@
 		pointer-events: none;
 	}
 
-	@media (max-width: 560px) {
+	@media (max-width: 480px) {
 		.toaster {
 			left: 1rem;
 			right: 1rem;

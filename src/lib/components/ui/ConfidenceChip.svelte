@@ -37,13 +37,13 @@
 	.chip {
 		display: inline-flex;
 		align-items: center;
-		gap: 0.35rem;
+		flex-wrap: wrap;
+		gap: 0.15rem 0.35rem;
 		font-size: var(--text-xs);
 		font-weight: 500;
 		padding: 0.3rem 0.7rem;
 		border-radius: var(--radius-full);
 		letter-spacing: var(--ls-snug);
-		white-space: nowrap;
 	}
 
 	.chip--good {
@@ -72,5 +72,7 @@
 		color: inherit;
 		opacity: 0.85;
 		font-variant-numeric: tabular-nums;
+		/* Wraps as one unit so "1 234 kauppaa" never splits mid-number. */
+		white-space: nowrap;
 	}
 </style>

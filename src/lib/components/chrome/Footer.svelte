@@ -100,6 +100,9 @@
 	.ftr__nav a {
 		color: var(--ink-2);
 		text-decoration: none;
+		display: inline-flex;
+		align-items: center;
+		min-height: 44px;
 		padding: 0.2rem 0;
 		border-bottom: 1px solid var(--border);
 		transition: color var(--dur-fast) var(--ease-standard), border-color var(--dur-fast) var(--ease-standard);

@@ -331,6 +331,9 @@
 		text-decoration: none;
 		font-weight: 500;
 		font-size: var(--text-md);
+		display: inline-flex;
+		align-items: center;
+		min-height: 44px;
 		padding: 0.5rem 0;
 		transition: color var(--dur-fast) var(--ease-standard);
 	}
@@ -342,7 +345,10 @@
 		.yield-grid { grid-template-columns: 1fr 1fr; }
 	}
 
-	@media (max-width: 420px) {
-		.metrics { grid-template-columns: 1fr; }
+	@media (max-width: 480px) {
+		.metrics,
+		.yield-grid {
+			grid-template-columns: 1fr;
+		}
 	}
 </style>

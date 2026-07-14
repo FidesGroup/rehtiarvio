@@ -25,7 +25,9 @@
 		font-weight: 500;
 		border-radius: var(--radius-full);
 		letter-spacing: var(--ls-snug);
-		white-space: nowrap;
+		/* Flags can be full sentences — wrap instead of overflowing. */
+		max-width: 100%;
+		line-height: var(--lh-snug);
 	}
 
 	.chip--sm {

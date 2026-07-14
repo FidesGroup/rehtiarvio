@@ -108,7 +108,8 @@
 		color: var(--brand);
 		background: transparent;
 		border: 1px solid transparent;
-		padding: 0.35rem 0.65rem;
+		padding: 0.5rem 0.85rem;
+		min-height: 44px;
 		border-radius: var(--radius-full);
 		cursor: pointer;
 		transition: background var(--dur-fast) var(--ease-standard);

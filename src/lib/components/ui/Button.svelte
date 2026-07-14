@@ -81,6 +81,12 @@
 		padding: 0.5rem 0.95rem;
 		min-height: 36px;
 	}
+
+	@media (pointer: coarse) {
+		.btn--sm {
+			min-height: 44px;
+		}
+	}
 	.btn--md {
 		font-size: var(--text-md);
 		padding: 0.7rem 1.2rem;
