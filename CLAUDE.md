@@ -63,12 +63,21 @@ constraints below were each earned the hard way in one intensive build day
 ### Design
 
 10. **Clean and simple; intentional, not templated.** Design tokens live in
-    `src/routes/+layout.svelte`: Baltic petrol accent `#0f6a78`, copper
-    `#a4512e` = over market, pine `#2e6b46` = under market, light + dark themes
-    via tokens. Square corners, no gradient heroes, no emoji section markers.
-    Map ramp/breaks live in `src/lib/PriceMap.svelte` — the ramp is
+    `src/lib/styles/tokens.css`: editorial paper/ink palette (bg `#fafaf7`,
+    brand = publication ink `#0a0a0a`), light theme only; signal colors are
+    reserved for verdict direction (warn `#b3261e` = over market, good
+    `#1d6f3a` = under market). Square corners, no gradient heroes, no emoji
+    section markers. Layout convention (documented next to the container
+    tokens): containers prose 38rem / app 62rem (the `<main>` default) /
+    wide 76rem (map + chrome); canonical breakpoints 480 / 720 / 900 px plus
+    `@media (pointer: coarse)` for ≥44px tap targets. Map ramp/breaks live in
+    `src/lib/PriceMap.svelte` (MiniMap dots mirror it) — the ramp is
     lightness-monotonic and CVD-validated; don't eyeball replacements.
 11. **UI language is Finnish; code and docs are English.**
+12. **Touch parity on map surfaces.** Hover-only affordances are forbidden:
+    /kartta's coarse-pointer tap-to-pin panel must keep exposing €/m² +
+    transaction count, and the landing map links to /kartta as its touch
+    affordance.
 
 ## Dev environment gotchas (Windows host)
 

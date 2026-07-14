@@ -1,6 +1,6 @@
 # Technical roadmap — RehtiArvio (public UI repo)
 
-Last updated: 2026-07-05. Rules and constraints: see `../CLAUDE.md`.
+Last updated: 2026-07-14. Rules and constraints: see `../CLAUDE.md`.
 This repo is the Vercel-facing UI and the commodity benchmark engine.
 Business planning, the Stage-1 extraction worker, and its prompts live in a
 separate private repository — features land here only when they are ready to
@@ -8,8 +8,12 @@ be public.
 
 ## Where we are (v0.3)
 
-- **`/` landing** — hero, benchmark form (postal code + rooms + price + m²),
-  three value props, waiting-list signup (Supabase `leads`).
+- **`/` landing** — two-column hero (URL analyzer left, fluid Finland
+  MiniMap right with StatFin caption + /kartta link; stacks <900px),
+  manual benchmark form behind a toggle, inline feature row, waiting-list
+  signup (Supabase `leads`). Responsive overhaul 2026-07-14: 62rem main
+  container, breakpoints 480/720/900, tap-to-pin price panel on /kartta
+  for touch devices.
 - **`/arvio`** — shareable SSR verdict from URL params, zero storage.
 - **`/analyysi`** — paste listing text or give a listing URL (allowlisted
   hosts, single user-directed fetch); deterministic extraction of ~50 Finnish
