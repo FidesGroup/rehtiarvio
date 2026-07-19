@@ -10,7 +10,7 @@ export const copy = {
 
 	nav: {
 		analyze: 'Analysoi',
-		map: 'Markkina-analyysi',
+		map: 'Kartta',
 		pricing: 'Taloyhtiöraportti',
 		why: 'Miksi?',
 		skipToContent: 'Hyppää sisältöön'
@@ -84,7 +84,7 @@ export const copy = {
 			title: 'Postinumeroalueiden neliöhinnat',
 			source: 'Lähde: Tilastokeskus 13mt · 4 viimeistä neljännestä',
 			hint: 'Keltainen = edullinen, punainen = kallis neliöhinta. Klikkaa aluetta esitäyttääksesi vertailun.',
-			openFull: 'Avaa markkina-analyysi →'
+			openFull: 'Avaa kartta →'
 		},
 
 		examples: {
@@ -262,7 +262,7 @@ export const copy = {
 	},
 
 	kartta: {
-		title: 'Markkina-analyysi',
+		title: 'Kartta',
 		h1: 'Asuntomarkkinat postinumeroalueittain',
 		lede: 'Toteutuneet neliöhinnat, 12 kuukauden hintakehitys, bruttovuokratuotot ja markkinan likviditeetti kartalla. Klikkaa aluetta esitäyttääksesi vertailun.',
 		legendNoData: 'Katkoviivalla merkityltä alueelta ei ole julkaistua arvoa valitulle tunnusluvulle.',
@@ -408,7 +408,7 @@ export const copy = {
 			{ code: 'Vuokrat', desc: 'Keskivuokrat postinumeroalueittain.' }
 		],
 		dataNote:
-			'Hinnat päivittyvät neljä kertaa vuodessa, kun Tilastokeskus julkaisee uudet luvut. Tilastojen tunnisteet (13mt, 13mv, 15hw, asvu 13eb sekä Paavo-aluetilasto) löytyvät sivun alatunnisteesta ja markkina-analyysin lähdemerkinnöistä.',
+			'Hinnat päivittyvät neljä kertaa vuodessa, kun Tilastokeskus julkaisee uudet luvut. Tilastojen tunnisteet (13mt, 13mv, 15hw, asvu 13eb sekä Paavo-aluetilasto) löytyvät sivun alatunnisteesta ja Kartta-sivun lähdemerkinnöistä.',
 		howTitle: 'Miten vertailu toimii',
 		howSteps: [
 			'Liität myynti-ilmoituksen linkin tai tekstin.',
@@ -430,9 +430,9 @@ export const copy = {
 			{ name: 'Aluevertailu', desc: 'Omalta alueelta ei löytynyt tarpeeksi kauppoja, joten vertaamme laajempaan alueeseen. Karkeampi taso.' },
 			{ name: 'Kuntoarvio', desc: 'Kauppoja on liian vähän vertailuun, joten annamme hintahaarukan asunnon kunnon perusteella. Aina suuntaa antava.' }
 		],
-		metricsTitle: 'Markkina-analyysin tunnusluvut',
+		metricsTitle: 'Kartan tunnusluvut',
 		metricsIntro:
-			'Markkina-analyysin kartta, taulukot ja CSV-vienti käyttävät seuraavia tunnuslukuja. Jokainen lasketaan vain, kun havaintoja on riittävästi — muuten arvo jätetään näyttämättä sen sijaan, että tilalle keksittäisiin luku.',
+			'Kartta-sivun karttatasot, taulukot ja CSV-vienti käyttävät seuraavia tunnuslukuja. Jokainen lasketaan vain, kun havaintoja on riittävästi — muuten arvo jätetään näyttämättä sen sijaan, että tilalle keksittäisiin luku.',
 		metrics: [
 			{
 				name: 'Neliöhinta (€/m²)',

@@ -2,7 +2,7 @@
  * Whole-country price history from StatFin 13mv (old apartment €/m² and
  * transaction counts by larger areas, quarterly since 2006, CC BY 4.0).
  * Same shape as AreaHistory so the /arvio history charts render it
- * unchanged on the Markkina-analyysi page. Best-effort + cached.
+ * unchanged on the Kartta page. Best-effort + cached.
  */
 import type { AreaHistory, YearPoint } from './history';
 

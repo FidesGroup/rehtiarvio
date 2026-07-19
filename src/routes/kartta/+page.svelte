@@ -75,7 +75,7 @@
 </script>
 
 <svelte:head>
-	<title>Markkina-analyysi | RehtiArvio</title>
+	<title>Kartta | RehtiArvio</title>
 	<meta name="description" content={copy.kartta.lede} />
 </svelte:head>
 

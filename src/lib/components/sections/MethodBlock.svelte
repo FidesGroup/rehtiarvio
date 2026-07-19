@@ -79,7 +79,7 @@
 
 	<Card>
 		{#snippet header()}<h2 class="h2">{copy.miksi.coverageTitle}</h2>{/snippet}
-		<p class="coverage">{copy.miksi.coverageCount(cover)} <a href="/kartta">Avaa markkina-analyysi →</a></p>
+		<p class="coverage">{copy.miksi.coverageCount(cover)} <a href="/kartta">Avaa kartta →</a></p>
 	</Card>
 </div>
 

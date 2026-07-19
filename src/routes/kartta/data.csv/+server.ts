@@ -14,7 +14,7 @@ const text = (s: string): string => (/[";\n]/.test(s) ? `"${s.replaceAll('"', '"
 export const GET: RequestHandler = () => {
 	const stats = marketStats();
 	const lines = [
-		`# RehtiArvio — markkina-analyysi ${stats.windowLabel}. Lähde: Tilastokeskus (13mt, asvu 13eb, Paavo), CC BY 4.0.`,
+		`# RehtiArvio — aluetaulukko ${stats.windowLabel}. Lähde: Tilastokeskus (13mt, asvu 13eb, Paavo), CC BY 4.0.`,
 		[
 			'postinumero',
 			'alue',
@@ -48,7 +48,7 @@ export const GET: RequestHandler = () => {
 	return new Response('﻿' + lines.join('\r\n') + '\r\n', {
 		headers: {
 			'content-type': 'text/csv; charset=utf-8',
-			'content-disposition': 'attachment; filename="rehtiarvio-markkina-analyysi.csv"',
+			'content-disposition': 'attachment; filename="rehtiarvio-aluetaulukko.csv"',
 			'cache-control': 'public, max-age=3600'
 		}
 	});
