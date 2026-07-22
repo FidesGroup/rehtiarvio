@@ -5,7 +5,7 @@
 
 <svelte:head>
 	<title>Tietosuojaseloste | RehtiArvio</title>
-	<meta name="description" content="RehtiArvion tietosuojaseloste: mitä tietoa kerätään, miksi, ja miten käytät oikeuksiasi." />
+	<meta name="description" content="RehtiArvion tietosuojaseloste: mitä tietoa kerätään, miksi ja miten käytät oikeuksiasi." />
 </svelte:head>
 
 <div class="page">

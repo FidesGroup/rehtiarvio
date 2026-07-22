@@ -244,7 +244,7 @@ export const copy = {
 			forecastLabel: 'Seuraavan 12 kk trendiennuste',
 			forecastSeries: 'Ennuste',
 			forecastNote:
-				'Trendiennuste on lineaarinen jatke alueen toteutuneista hinnoista (enintään 5 v), suuntaa antava eikä takuu tulevasta.',
+				'Trendiennuste on lineaarinen jatke alueen toteutuneista hinnoista (enintään 5 v), suuntaa antava, ei takuu tulevasta.',
 			source: 'Lähde: Tilastokeskus 13mt',
 			partialNote: 'Viimeisin vuosi voi olla vajaa.'
 		},
@@ -538,7 +538,7 @@ export const copy = {
 
 	consent: {
 		bannerAriaLabel: 'Evästeasetukset',
-		lede: 'Sivulla on muutama eväste. Pakolliset pyörittävät sivua, loput käynnistyvät vain jos hyväksyt ne.',
+		lede: 'Sivulla on muutama eväste. Pakolliset pyörittävät sivua, loput käynnistyvät vain, jos hyväksyt ne.',
 		privacyLink: 'Lue lisää evästeistä',
 		acceptAll: 'Hyväksy kaikki',
 		rejectAll: 'Hylkää valinnaiset',
@@ -564,7 +564,7 @@ export const copy = {
 
 	evasteet: {
 		h1: 'Evästeet ja seurannan hallinta',
-		lede: 'Kolme ryhmää: välttämättömät ovat aina päällä, analytiikan ja markkinoinnin voit hyväksyä tai hylätä alta, milloin tahansa.',
+		lede: 'Kolme ryhmää: välttämättömät ovat aina päällä, analytiikan ja markkinoinnin voit hyväksyä tai hylätä alta milloin tahansa.',
 		manageTitle: 'Omat valinnat',
 		tableTitle: 'Käytössä olevat evästeet',
 		tableCols: { name: 'Nimi', group: 'Ryhmä', purpose: 'Tarkoitus', duration: 'Voimassaolo', setter: 'Asettaja' },
@@ -642,7 +642,7 @@ export const copy = {
 			'Vercel, Stripe ja PostHog ovat yhdysvaltalaisia yhtiöitä, vaikka itse tieto säilytetään EU-alueella. Tämä nojaa EU:n vakiosopimuslausekkeisiin tai muuhun GDPR:n hyväksymään siirtoperusteeseen.',
 		rightsTitle: 'Sinun oikeutesi',
 		rightsBody:
-			'Voit pyytää pääsyn omiin tietoihisi, pyytää niiden korjaamista tai poistamista, rajoittaa niiden käsittelyä, pyytää tiedot siirrettäväksi toiseen palveluun, ja perua suostumuksesi milloin tahansa osoitteessa /evasteet. Jos jokin ei täsmää, voit tehdä kantelun tietosuojavaltuutetulle (tietosuoja.fi). Näitä oikeuksia käytät ottamalla yhteyttä yllä olevaan sähköpostiin.',
+			'Voit pyytää pääsyn omiin tietoihisi, pyytää niiden korjaamista tai poistamista, rajoittaa niiden käsittelyä, pyytää tiedot siirrettäväksi toiseen palveluun ja perua suostumuksesi milloin tahansa osoitteessa /evasteet. Jos jokin ei täsmää, voit tehdä kantelun tietosuojavaltuutetulle (tietosuoja.fi). Näitä oikeuksia käytät ottamalla yhteyttä yllä olevaan sähköpostiin.',
 		automatedTitle: 'Automaattinen päätöksenteko',
 		automatedBody:
 			'Hinta-arvio on tilastollinen vertailu, ei sinua koskeva päätös, jolla olisi oikeudellisia vaikutuksia (GDPR 22 artikla).',
