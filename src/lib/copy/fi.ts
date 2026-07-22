@@ -582,7 +582,7 @@ export const copy = {
 		updated: 'Viimeksi päivitetty: 22.7.2026 (v1).',
 		controllerTitle: 'Rekisterinpitäjä',
 		controllerBody:
-			'Arttu Hakkarainen / Fides Group [Y-TUNNUS TÄYTETTÄVÄ], [OSOITE TÄYTETTÄVÄ]. Yhteydenotot rekisteriasioissa: [SÄHKÖPOSTI TÄYTETTÄVÄ].',
+			'Arttu Hakkarainen / Fides Group, Y-tunnus 3637368-5, Espoo, Suomi. Yhteydenotot rekisteriasioissa: arthakkarainen@gmail.com.',
 		whatTitle: 'Mitä tietoa kerätään ja millä perusteella',
 		whatRows: [
 			{
@@ -612,11 +612,27 @@ export const copy = {
 			}
 		],
 		retentionTitle: 'Säilytysajat',
-		retentionNote:
-			'Tarkat säilytysajat vahvistetaan erikseen (ks. docs/MINIMAXGDPR_PLAN.md, avoimet päätökset) — tämä seloste päivitetään, kun ne on päätetty.',
+		retentionRows: [
+			{
+				name: 'Jonotuslistan sähköpostit (leads)',
+				period: 'Säilytetään niin kauan kuin ne palvelevat alkuperäistä tarkoitusta (jonotuslistan ilmoitus, ja markkinointiluvan antaneilla myös muu RehtiArvion viestintä). Tarve arvioidaan vuosittain.'
+			},
+			{
+				name: 'Suostumusloki (consent_log)',
+				period: 'Säilytetään toistaiseksi todisteena annetusta/perutusta suostumuksesta (GDPR 7 artikla). Tarve arvioidaan vuosittain.'
+			},
+			{
+				name: 'Analytiikkatapahtumat (PostHog)',
+				period: 'Säilytetään PostHogin projektiasetuksissa valitun, mahdollisimman pitkän säilytysajan verran. Tarve arvioidaan vuosittain.'
+			},
+			{
+				name: 'Tilaajatiedot ja taloyhtiöraportit',
+				period: 'Säilytetään asiakassuhteen ajan sekä kirjanpitolain edellyttämän ajan sen jälkeen.'
+			}
+		],
 		recipientsTitle: 'Vastaanottajat ja käsittelijät',
 		recipients: [
-			'Supabase — tietokanta (varmista aluesijainti ennen julkaisua).',
+			'Supabase (EU, eu-west-1/Irlanti) — tietokanta.',
 			'PostHog EU Cloud — kävijäanalytiikka (eu.posthog.com), vain suostumuksella.',
 			'Vercel — sivuston hosting, laskenta-alue fra1 (Frankfurt).',
 			'Stripe — maksunvälitys tilausten yhteydessä.'

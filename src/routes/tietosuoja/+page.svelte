@@ -31,7 +31,14 @@
 
 	<section class="section">
 		<h2>{copy.tietosuoja.retentionTitle}</h2>
-		<p>{copy.tietosuoja.retentionNote}</p>
+		<dl class="deflist">
+			{#each copy.tietosuoja.retentionRows as row (row.name)}
+				<div class="deflist__row">
+					<dt>{row.name}</dt>
+					<dd>{row.period}</dd>
+				</div>
+			{/each}
+		</dl>
 	</section>
 
 	<section class="section">
