@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import { copy } from '$lib/copy/fi';
+	import { MARK_SVG } from '$lib/brand/mark';
 
 	const links = [
 		{ href: '/', label: copy.nav.analyze },
@@ -22,7 +23,7 @@
 
 <header class="hdr">
 	<a class="wordmark" href="/" onclick={close} aria-label={copy.brand.name}>
-		<span class="wordmark__mark" aria-hidden="true"></span>
+		<span class="wordmark__mark" aria-hidden="true">{@html MARK_SVG}</span>
 		<span class="wordmark__text">{copy.brand.name}</span>
 	</a>
 
@@ -100,25 +101,16 @@
 	}
 
 	.wordmark__mark {
-		width: 22px;
-		height: 22px;
-		background: var(--brand);
-		border-radius: 6px;
-		position: relative;
+		display: inline-flex;
+		width: 24px;
+		height: 24px;
+		flex-shrink: 0;
 	}
 
-	.wordmark__mark::after {
-		content: '';
-		position: absolute;
-		left: 5px;
-		top: 11px;
-		width: 12px;
-		height: 2px;
-		background: var(--brand-ink);
-		border-radius: 2px;
-		box-shadow:
-			0 -4px 0 var(--brand-ink),
-			0 -7px 0 var(--brand-ink);
+	.wordmark__mark :global(svg) {
+		width: 100%;
+		height: 100%;
+		display: block;
 	}
 
 	.nav {

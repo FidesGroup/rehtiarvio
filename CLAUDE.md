@@ -77,6 +77,12 @@ constraints below were each earned the hard way in one intensive build day
     `@media (pointer: coarse)` for ≥44px tap targets. Map ramp/breaks live in
     `src/lib/PriceMap.svelte` (MiniMap dots mirror it) — the ramp is
     lightness-monotonic and CVD-validated; don't eyeball replacements.
+    **Logo mark:** the canonical monogram (a geometric ink-tile "R" over a
+    baseline rule — a nod to asking-price-vs-baseline) lives in one source,
+    `src/lib/brand/mark.ts`; Header/Footer inline it, the `/og` share card
+    embeds it, and `static/favicon.svg` + `static/logo.svg` mirror it
+    byte-for-byte. It stays neutral ink — signal colors are never spent on
+    chrome. Change the artwork in one place and re-sync the two static files.
 11. **UI language is Finnish; code and docs are English.**
 12. **Touch parity on map surfaces.** Hover-only affordances are forbidden:
     /kartta's coarse-pointer tap-to-pin panel must keep exposing €/m² +

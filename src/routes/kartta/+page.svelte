@@ -82,9 +82,11 @@
 	<meta property="og:description" content={copy.kartta.lede} />
 	<meta property="og:type" content="website" />
 	<meta property="og:url" content={`${SITE_URL}/kartta`} />
-	<meta name="twitter:card" content="summary" />
+	<meta property="og:image" content={`${SITE_URL}/og`} />
+	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content="Kartta | RehtiArvio" />
 	<meta name="twitter:description" content={copy.kartta.lede} />
+	<meta name="twitter:image" content={`${SITE_URL}/og`} />
 </svelte:head>
 
 <PageHero

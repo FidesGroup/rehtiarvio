@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { copy } from '$lib/copy/fi';
+	import { MARK_SVG } from '$lib/brand/mark';
 
 	let { areas = null }: { areas?: number | null } = $props();
 
@@ -19,7 +20,8 @@
 			<span class="fides__sub">GROUP</span>
 		</a>
 		<p class="ftr__copy">
-			<b>RehtiArvio</b> {copy.footer.brandLine}
+			<span class="ftr__mark" aria-hidden="true">{@html MARK_SVG}</span><b>RehtiArvio</b>
+			{copy.footer.brandLine}
 		</p>
 	</div>
 
@@ -66,6 +68,20 @@
 	.ftr__copy b {
 		color: var(--ink);
 		font-weight: 600;
+	}
+
+	.ftr__mark {
+		display: inline-block;
+		width: 1.05em;
+		height: 1.05em;
+		margin-right: 0.4em;
+		vertical-align: -0.18em;
+	}
+
+	.ftr__mark :global(svg) {
+		width: 100%;
+		height: 100%;
+		display: block;
 	}
 
 	.fides {

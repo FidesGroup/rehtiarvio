@@ -36,12 +36,14 @@
 	/>
 	<meta property="og:type" content="website" />
 	<meta property="og:url" content={SITE_URL} />
-	<meta name="twitter:card" content="summary" />
+	<meta property="og:image" content={`${SITE_URL}/og`} />
+	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content="RehtiArvio | Ilmainen markkinahinta-analyysi" />
 	<meta
 		name="twitter:description"
 		content="Liitä myynti-ilmoitus, niin saat vertailun Tilastokeskuksen toteutuneisiin kauppoihin postinumeroalueittain."
 	/>
+	<meta name="twitter:image" content={`${SITE_URL}/og`} />
 </svelte:head>
 
 <div class="hero-grid">
