@@ -4,9 +4,17 @@
  * values appear). Fetched on demand per postal code for the /arvio page,
  * aggregated to yearly figures, cached in memory. Best-effort: any
  * failure returns null and the page renders without the history section.
+ *
+ * The table lives behind statfin-tables.ts because 13mt is paused and
+ * currently served from the archive — see the note there.
  */
-
-const TABLE_URL = 'https://statfin.stat.fi/PxWeb/api/v1/fi/StatFin/ashi/13mt.px';
+import {
+	POSTAL_PRICE_TABLES,
+	dimCode,
+	lookup,
+	queryTable,
+	resolveTable
+} from './statfin-tables.ts';
 
 const TYPES: Record<string, string> = { '1': 'yksiöt', '2': 'kaksiot', '3': 'kolmiot+' };
 
@@ -50,57 +58,23 @@ export async function fetchAreaHistory(postalCode: string): Promise<AreaHistory 
 }
 
 async function fetchUncached(postalCode: string): Promise<AreaHistory | null> {
-	const metaRes = await fetch(TABLE_URL, { signal: AbortSignal.timeout(6000) });
-	if (!metaRes.ok) return null;
-	const meta = (await metaRes.json()) as { variables: { code: string; values: string[] }[] };
-	const quarters = meta.variables.find((v) => v.code === 'timeperiod_q')?.values ?? [];
+	const table = await resolveTable(POSTAL_PRICE_TABLES);
+	if (!table) return null;
+	const postalDim = dimCode(table.meta, 'postinumeroalue');
+	const typeDim = dimCode(table.meta, 'talotyyppi');
+	if (!postalDim || !typeDim) return null;
+	const quarters = table.quarters;
 	if (!quarters.length) return null;
 
-	const query = {
-		query: [
-			{ code: 'timeperiod_q', selection: { filter: 'item', values: quarters } },
-			{ code: 'postinumeroalue_4_20220101', selection: { filter: 'item', values: [postalCode] } },
-			{ code: 'talotyyppi_6_20131021', selection: { filter: 'item', values: Object.keys(TYPES) } }
-		],
-		response: { format: 'json-stat2' }
-	};
-	const res = await fetch(TABLE_URL, {
-		method: 'POST',
-		headers: { 'content-type': 'application/json' },
-		body: JSON.stringify(query),
-		signal: AbortSignal.timeout(6000)
-	});
-	if (!res.ok) return null;
-	const d = (await res.json()) as {
-		id: string[];
-		size: number[];
-		value: (number | null)[];
-		dimension: Record<string, { category: { index: Record<string, number> } }>;
-	};
-
-	const codesByDim = d.id.map((dim) => {
-		const index = d.dimension[dim].category.index;
-		const arr: string[] = [];
-		for (const [code, i] of Object.entries(index)) arr[i] = code;
-		return arr;
-	});
-	const strides = d.size.map((_, i) => d.size.slice(i + 1).reduce((a, b) => a * b, 1));
-	const data = new Map<string, number | null>();
-	d.value.forEach((v, flat) => {
-		const key = d.id
-			.map((_, i) => codesByDim[i][Math.floor(flat / strides[i]) % d.size[i]])
-			.join('|');
-		data.set(key, v);
-	});
-	const get = (t: string, q: string, metric: string) => {
-		const parts: Record<string, string> = {
-			timeperiod_q: q,
-			postinumeroalue_4_20220101: postalCode,
-			talotyyppi_6_20131021: t,
-			contentscode: metric
-		};
-		return data.get(d.id.map((dim) => parts[dim]).join('|')) ?? null;
-	};
+	const d = await queryTable(table.url, [
+		{ code: 'timeperiod_q', selection: { filter: 'item', values: quarters } },
+		{ code: postalDim, selection: { filter: 'item', values: [postalCode] } },
+		{ code: typeDim, selection: { filter: 'item', values: Object.keys(TYPES) } }
+	]);
+	if (!d) return null;
+	const cube = lookup(d);
+	const get = (t: string, q: string, metric: string) =>
+		cube({ timeperiod_q: q, [postalDim]: postalCode, [typeDim]: t, contentscode: metric });
 
 	// Quarterly → yearly: transaction-weighted €/m² per room type, summed n.
 	// Also keep the all-type weighted mean per quarter for the 12-month change.

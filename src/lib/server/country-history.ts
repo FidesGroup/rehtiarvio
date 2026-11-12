@@ -1,16 +1,17 @@
 /**
- * Whole-country price history from StatFin 13mv (old apartment €/m² and
- * transaction counts by larger areas, quarterly since 2006, CC BY 4.0).
- * Same shape as AreaHistory so the /arvio history charts render it
- * unchanged on the Kartta page. Best-effort + cached.
+ * Whole-country price history from StatFin's area price tables (old apartment
+ * €/m² and transaction counts, quarterly since 2006, CC BY 4.0): the 2025=100
+ * release for 2025Q1 onwards, 13mv from the archive before that — see
+ * statfin-areaprices.ts. Yearly figures are the €/m² each vintage published,
+ * never a rescaled number.
+ *
+ * Same shape as AreaHistory so the /arvio history charts render it unchanged
+ * on the Kartta page. Best-effort + cached.
  */
+import { fetchAreaPrices } from './statfin-areaprices.ts';
 import type { AreaHistory, YearPoint } from './history';
 
-const TABLE_URL = 'https://statfin.stat.fi/PxWeb/api/v1/fi/StatFin/ashi/13mv.px';
 const AREA = 'ksu'; // Koko maa
-// 13mv publishes the room-type split only for kerrostalot (talotyyppi 3);
-// talotyyppi 0/1 carry only the 'Yhteensä' room class.
-const BUILDING_TYPE = '3';
 const ROOMS: Record<string, string> = { '01': 'yksiöt', '02': 'kaksiot', '03': 'kolmiot+' };
 
 let cache: { at: number; data: AreaHistory | null } | null = null;
@@ -30,84 +31,36 @@ export async function fetchCountryHistory(): Promise<AreaHistory | null> {
 }
 
 async function fetchUncached(): Promise<AreaHistory | null> {
-	const metaRes = await fetch(TABLE_URL, { signal: AbortSignal.timeout(6000) });
-	if (!metaRes.ok) return null;
-	const meta = (await metaRes.json()) as { variables: { code: string; values: string[] }[] };
-	const quarters = meta.variables.find((v) => v.code === 'timeperiod_q')?.values ?? [];
+	const series = await fetchAreaPrices([AREA], Object.keys(ROOMS));
+	if (!series) return null;
+	const quarters = series.quarters;
 	if (!quarters.length) return null;
 
-	const query = {
-		query: [
-			{ code: 'timeperiod_q', selection: { filter: 'item', values: quarters } },
-			{ code: 'alue_43_20220407', selection: { filter: 'item', values: [AREA] } },
-			{ code: 'talotyyppi_5_20111209', selection: { filter: 'item', values: [BUILDING_TYPE] } },
-			{ code: 'huoneluku_1_20111212', selection: { filter: 'item', values: Object.keys(ROOMS) } }
-		],
-		response: { format: 'json-stat2' }
-	};
-	const res = await fetch(TABLE_URL, {
-		method: 'POST',
-		headers: { 'content-type': 'application/json' },
-		body: JSON.stringify(query),
-		signal: AbortSignal.timeout(6000)
-	});
-	if (!res.ok) return null;
-	const d = (await res.json()) as {
-		id: string[];
-		size: number[];
-		value: (number | null)[];
-		dimension: Record<string, { category: { index: Record<string, number> } }>;
-	};
+	const get = (room: string, q: string) => series.cell(AREA, room, q)?.eur ?? null;
+	const getN = (room: string, q: string) => series.cell(AREA, room, q)?.n ?? null;
 
-	const codesByDim = d.id.map((dim) => {
-		const index = d.dimension[dim].category.index;
-		const arr: string[] = [];
-		for (const [code, i] of Object.entries(index)) arr[i] = code;
-		return arr;
-	});
-	const strides = d.size.map((_, i) => d.size.slice(i + 1).reduce((a, b) => a * b, 1));
-	const data = new Map<string, number | null>();
-	d.value.forEach((v, flat) => {
-		const key = d.id
-			.map((_, i) => codesByDim[i][Math.floor(flat / strides[i]) % d.size[i]])
-			.join('|');
-		data.set(key, v);
-	});
-	const get = (room: string, q: string, metric: string) => {
-		const parts: Record<string, string> = {
-			timeperiod_q: q,
-			alue_43_20220407: AREA,
-			talotyyppi_5_20111209: BUILDING_TYPE,
-			huoneluku_1_20111212: room,
-			contentscode: metric
-		};
-		return data.get(d.id.map((dim) => parts[dim]).join('|')) ?? null;
-	};
-	// Transaction counts switch register in 2020; take whichever is published.
-	const getN = (room: string, q: string) =>
-		get(room, q, 'lkm_julk20') ?? get(room, q, 'lkm_julk19');
-
+	// Yearly figures are levels, so they stay as each vintage published them.
 	const byYear = new Map<number, { sums: Record<string, number>; ns: Record<string, number>; n: number }>();
-	const qMeans: number[] = [];
 	for (const q of quarters) {
 		const year = Number(q.slice(0, 4));
 		if (!byYear.has(year)) byYear.set(year, { sums: {}, ns: {}, n: 0 });
 		const y = byYear.get(year)!;
-		let qSum = 0;
-		let qN = 0;
 		for (const [room, name] of Object.entries(ROOMS)) {
-			const eur = get(room, q, 'keskihinta_aritm');
+			const eur = get(room, q);
 			const n = getN(room, q);
 			if (eur !== null && n) {
 				y.sums[name] = (y.sums[name] ?? 0) + eur * n;
 				y.ns[name] = (y.ns[name] ?? 0) + n;
 				y.n += n;
-				qSum += eur * n;
-				qN += n;
 			}
 		}
-		if (qN > 0) qMeans.push(qSum / qN);
 	}
+	// The 12-month change and the trend are rates over the most recent
+	// quarters, which straddle the vintage seam — take those from the
+	// chain-linked series so the handover cannot show up as price movement.
+	const qMeans = series
+		.chainLinked(AREA, Object.keys(ROOMS))
+		.filter((v): v is number => v !== null);
 	const years: YearPoint[] = [...byYear.entries()]
 		.map(([year, y]) => ({
 			year,

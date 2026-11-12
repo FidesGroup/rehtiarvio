@@ -5,8 +5,21 @@
  * Attribution requirement: "Lähde: Tilastokeskus" must be shown wherever values appear.
  */
 import type { BenchmarkCell } from './benchmark';
+import { POSTAL_PRICE_TABLES, dimCode, lookup, queryTable, resolveTable } from './statfin-tables.ts';
 
-const TABLE_URL = 'https://statfin.stat.fi/PxWeb/api/v1/fi/StatFin/ashi/13mt.px';
+/**
+ * The cron pulls every known postal code at once, so it gets a far longer
+ * budget than the per-request history fetches.
+ */
+const TIMEOUT_MS = 120_000;
+
+async function postalTable() {
+	const table = await resolveTable(POSTAL_PRICE_TABLES, { timeoutMs: TIMEOUT_MS });
+	if (!table) {
+		throw new Error('StatFin metadata: 13mt unavailable (live id and archive both failed)');
+	}
+	return table;
+}
 
 // Room types
 const TYPES: Record<string, string> = { '1': 'yksiöt', '2': 'kaksiot', '3': 'kolmiot+' };
@@ -20,12 +33,8 @@ const BUILDING_TYPES: Record<string, string> = {
 };
 
 export async function fetchLatestQuarters(count = 4): Promise<string[]> {
-	const res = await fetch(TABLE_URL);
-	if (!res.ok) throw new Error(`StatFin metadata: HTTP ${res.status}`);
-	const meta = (await res.json()) as { variables: { code: string; values: string[] }[] };
-	const q = meta.variables.find((v) => v.code === 'timeperiod_q');
-	if (!q) throw new Error('timeperiod_q variable not found');
-	return q.values.slice(-count);
+	const { quarters } = await postalTable();
+	return quarters.slice(-count);
 }
 
 export async function fetchBenchmarks(
@@ -36,55 +45,26 @@ export async function fetchBenchmarks(
 		? Object.keys(BUILDING_TYPES)
 		: Object.keys(TYPES); // When disabled, fetch all room types (current behavior)
 
-	const query = {
-		query: [
+	const table = await postalTable();
+	const postalDim = dimCode(table.meta, 'postinumeroalue');
+	// talotyyppi can filter by building type (1=kerrostalo, 2=rivitalo) or by room type
+	const typeDim = dimCode(table.meta, 'talotyyppi');
+	if (!postalDim || !typeDim) throw new Error('StatFin query: 13mt dimensions missing');
+
+	const d = await queryTable(
+		table.url,
+		[
 			{ code: 'timeperiod_q', selection: { filter: 'item', values: quarters } },
-			{ code: 'postinumeroalue_4_20220101', selection: { filter: 'item', values: postalCodes } },
-			// talotyyppi_6_20131021 can filter by building type (1=kerrostalo, 2=rivitalo) or by room type
-			{ code: 'talotyyppi_6_20131021', selection: { filter: 'item', values: buildingTypesToFetch } }
+			{ code: postalDim, selection: { filter: 'item', values: postalCodes } },
+			{ code: typeDim, selection: { filter: 'item', values: buildingTypesToFetch } }
 		],
-		response: { format: 'json-stat2' }
-	};
-	const res = await fetch(TABLE_URL, {
-		method: 'POST',
-		headers: { 'content-type': 'application/json' },
-		body: JSON.stringify(query)
-	});
-	if (!res.ok) throw new Error(`StatFin query: HTTP ${res.status}`);
-	const d = (await res.json()) as {
-		id: string[];
-		size: number[];
-		value: (number | null)[];
-		dimension: Record<string, { category: { index: Record<string, number> } }>;
-	};
+		{ timeoutMs: TIMEOUT_MS }
+	);
+	if (!d) throw new Error('StatFin query failed');
 
-	const codesByDim = d.id.map((dim) => {
-		const index = d.dimension[dim].category.index;
-		const arr: string[] = [];
-		for (const [code, i] of Object.entries(index)) arr[i] = code;
-		return arr;
-	});
-
-	// flatten row-major indices -> keyed lookup
-	const data = new Map<string, number | null>();
-	const dims = d.id;
-	const strides = d.size.map((_, i) => d.size.slice(i + 1).reduce((a, b) => a * b, 1));
-	d.value.forEach((v, flat) => {
-		const key = dims
-			.map((_, i) => codesByDim[i][Math.floor(flat / strides[i]) % d.size[i]])
-			.join('|');
-		data.set(key, v);
-	});
-
-	const get = (post: string, t: string, q: string, metric: string) => {
-		const parts: Record<string, string> = {
-			timeperiod_q: q,
-			postinumeroalue_4_20220101: post,
-			talotyyppi_6_20131021: t,
-			contentscode: metric
-		};
-		return data.get(dims.map((dim) => parts[dim]).join('|')) ?? null;
-	};
+	const cube = lookup(d);
+	const get = (post: string, t: string, q: string, metric: string) =>
+		cube({ timeperiod_q: q, [postalDim]: post, [typeDim]: t, contentscode: metric });
 
 	const out: Record<string, BenchmarkCell> = {};
 	for (const post of postalCodes) {

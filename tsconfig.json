@@ -2,6 +2,9 @@
 	"extends": "./.svelte-kit/tsconfig.json",
 	"compilerOptions": {
 		"allowJs": true,
+		// src modules are also imported directly by scripts/*.mts under
+		// `node --experimental-strip-types`, which needs explicit .ts specifiers.
+		"allowImportingTsExtensions": true,
 		"checkJs": true,
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,

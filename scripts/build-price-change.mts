@@ -14,9 +14,9 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { fetchBenchmarks } from '../src/lib/server/statfin.ts';
+import { POSTAL_PRICE_TABLES, dimCode, resolveTable } from '../src/lib/server/statfin-tables.ts';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const TABLE_URL = 'https://statfin.stat.fi/PxWeb/api/v1/fi/StatFin/ashi/13mt.px';
 const ROOM_KEY: Record<string, 'y' | 'k2' | 'k3'> = {
 	'yksiöt': 'y',
 	kaksiot: 'k2',
@@ -47,16 +47,16 @@ async function main() {
 	}
 	console.log(`[price-change] current=${currentWindow.join(',')} prev=${prevWindow.join(',')}`);
 
-	const metaRes = await fetch(TABLE_URL);
-	if (!metaRes.ok) throw new Error(`StatFin metadata: HTTP ${metaRes.status}`);
-	const meta = (await metaRes.json()) as {
-		variables: { code: string; values: string[] }[];
-	};
-	const quarters = meta.variables.find((v) => v.code === 'timeperiod_q')?.values ?? [];
+	const table = await resolveTable(POSTAL_PRICE_TABLES, { timeoutMs: 120_000 });
+	if (!table) throw new Error('StatFin metadata: 13mt unavailable (live id and archive both failed)');
+	console.log(`[price-change] table: ${table.url}${table.archived ? ' (archived snapshot)' : ''}`);
 	for (const p of prevWindow) {
-		if (!quarters.includes(p)) throw new Error(`quarter ${p} not published in 13mt`);
+		if (!table.quarters.includes(p)) throw new Error(`quarter ${p} not published in 13mt`);
 	}
-	const postalCodes = meta.variables.find((v) => v.code === 'postinumeroalue_4_20220101')?.values ?? [];
+	const postalDim = dimCode(table.meta, 'postinumeroalue');
+	const postalCodes = postalDim
+		? (table.meta.variables.find((v) => v.code === postalDim)?.values ?? [])
+		: [];
 	if (!postalCodes.length) throw new Error('postal code dimension missing');
 	console.log(`[price-change] fetching ${postalCodes.length} postal codes…`);
 

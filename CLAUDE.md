@@ -134,6 +134,22 @@ constraints below were each earned the hard way in one intensive build day
 
 ## Data regeneration
 
+- **StatFin table availability (2026-11-11).** Tilastokeskus paused tables
+  13mt (postal quarterly prices), 13mv (area quarterly prices) and 12dd from
+  June 2026 for production reasons (change notice
+  `cms4b6l867u9006ultlfde2ik`) and moved the published snapshots into the
+  **StatFin_Passiivi** archive; the live ids now answer HTTP 400 and the
+  archived copies end at **2026Q1**, which is the newest postal-code quarter
+  published anywhere. Resolution lives in `src/lib/server/statfin-tables.ts`:
+  every caller tries the live id first and falls back to the archive, so the
+  site picks fresh quarters up by itself when the pause ends — don't hardcode
+  an archive URL at a call site. The same renewal rebased the area series to
+  2025 = 100 as table **15is**, which `statfin-areaprices.ts` splices onto
+  13mv for the country and divergence charts. 13mv wins every quarter it
+  published (15is' 2025Q1 average contradicts both 13mv and Tilastokeskus'
+  own index); 15is supplies 2026Q2 onwards, chain-linked. Levels ship as
+  published, rates and indices off the linked series — the module header has
+  the numbers.
 - **Benchmark cells (13mt, sale prices):** monthly Vercel cron calls
   `/api/refresh` (guarded by `CRON_SECRET`); StatFin publishes quarterly. With
   Supabase configured the cells upsert into `benchmarks`; without it the

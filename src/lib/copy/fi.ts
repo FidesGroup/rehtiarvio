@@ -122,7 +122,7 @@ export const copy = {
 			mostExpensive: 'Kallein alue',
 			cheapest: 'Edullisin alue',
 			countrySub: 'koko maa, kerrostalot',
-			source: 'Lähde: Tilastokeskus 13mt · 13mv',
+			source: 'Lähde: Tilastokeskus 13mt · 13mv · 15is',
 			methodToggle: 'Mistä nämä luvut lasketaan?'
 		},
 
@@ -332,7 +332,7 @@ export const copy = {
 			'Katsaus kootaan automaattisesti sivun tilastoista. Se ei ole sijoitusneuvo.',
 		countryPriceTitle: 'Koko maan hintakehitys (kerrostalot)',
 		countryVolumeTitle: 'Koko maan myyntimäärät (kerrostalot)',
-		countrySource: 'Lähde: Tilastokeskus 13mv',
+		countrySource: 'Lähde: Tilastokeskus 13mv · 15is',
 		divergence: {
 			title: 'Alueet erkanevat: pääkaupunkiseutu vs. muu Suomi',
 			lede: 'Kerrostalojen toteutuneet neliöhinnat indeksoituna samaan lähtötasoon vuonna 2020. Mitä kauemmas viivat karkaavat toisistaan, sitä enemmän markkinat ovat eriytyneet.',
@@ -344,7 +344,7 @@ export const copy = {
 			real: 'Reaalinen',
 			realNote:
 				'Reaalisesta sarjasta on poistettu yleinen hintojen nousu kuluttajahintaindeksillä. Se näyttää, miten asuntohinnat liikkuivat suhteessa muuhun hintatasoon.',
-			source: 'Lähde: Tilastokeskus 13mv · KHI 11xs'
+			source: 'Lähde: Tilastokeskus 13mv · 15is · KHI 11xs'
 		},
 		bandsTitle: 'Miten neliöhinnat jakautuvat',
 		bandsUnit: 'postinumeroalueet hintaluokittain',
@@ -373,7 +373,7 @@ export const copy = {
 		colChange: 'Muutos-%',
 		csvCta: 'Lataa aluetaulukko (CSV)',
 		csvNote: 'Kaikki julkaistut alueet tunnuslukuineen.',
-		attribution: 'Lähde: Tilastokeskus (13mt, asvu 13eb, 13mv, Paavo, CC BY 4.0).'
+		attribution: 'Lähde: Tilastokeskus (13mt, asvu 13eb, 13mv, 15is, Paavo, CC BY 4.0).'
 	},
 
 	// Colon-label titles/descriptions on purpose ("Helsinki: ...") — Finnish
@@ -464,7 +464,7 @@ export const copy = {
 			{ code: 'Vuokrat', desc: 'Keskivuokrat postinumeroalueittain.' }
 		],
 		dataNote:
-			'Hinnat päivittyvät neljästi vuodessa, aina kun Tilastokeskus julkaisee tuoreet luvut. Käytetyt tilastot (13mt, 13mv, 15hw, asvu 13eb sekä Paavo-aluetilasto) näet sivun alatunnisteesta ja Kartta-sivun lähdemerkinnöistä.',
+			'Hinnat päivittyvät neljästi vuodessa, aina kun Tilastokeskus julkaisee tuoreet luvut. Käytetyt tilastot (13mt, 13mv, 15is, 15hw, asvu 13eb sekä Paavo-aluetilasto) näet sivun alatunnisteesta ja Kartta-sivun lähdemerkinnöistä.',
 		howTitle: 'Näin vertailu toimii',
 		howSteps: [
 			'Liität myynti-ilmoituksen linkin tai tekstin.',
@@ -512,7 +512,7 @@ export const copy = {
 			},
 			{
 				name: 'Alueiden erkaneminen',
-				desc: 'Pääkaupunkiseudun ja muun Suomen kerrostalohinnat indeksisarjoina (13mv), perusvuosi 2020 = 100. Reaalisesta sarjasta on poistettu yleinen hintojen nousu kuluttajahintaindeksillä (KHI 11xs).'
+				desc: 'Pääkaupunkiseudun ja muun Suomen kerrostalohinnat indeksisarjoina (13mv ja 15is), perusvuosi 2020 = 100. Tilastokeskus uudisti sarjan perusvuoden kesken matkaa, joten tuoreimmat neljännekset ketjutetaan vanhaan tasoon: tilaston vaihtuminen ei näy käyrässä hinnanmuutoksena. Reaalisesta sarjasta on poistettu yleinen hintojen nousu kuluttajahintaindeksillä (KHI 11xs).'
 			}
 		],
 		limitsTitle: 'Mitä aluetilasto ei kerro',
@@ -605,7 +605,7 @@ export const copy = {
 	footer: {
 		brandLine: 'Fides Groupin kehittämä työkalu asuntokaupan markkinahintavertailuun.',
 		dataLine: (n: number) =>
-			`Data: Tilastokeskus 13mt · 13mv · asvu 13eb · ${n.toLocaleString('fi-FI')} postinumeroaluetta julkaistuin hinnoin · päivittyy neljännesvuosittain.`,
+			`Data: Tilastokeskus 13mt · 13mv · 15is · asvu 13eb · ${n.toLocaleString('fi-FI')} postinumeroaluetta julkaistuin hinnoin · päivittyy neljännesvuosittain.`,
 		links: {
 			why: 'Miksi RehtiArvio?',
 			how: 'Miten tämä toimii',
