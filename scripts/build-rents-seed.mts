@@ -6,7 +6,12 @@
  *
  * Output:
  *   src/lib/server/rents.seed.json  (RentCell map keyed by `${pc}_${room}`)
- *   src/lib/server/postal-areas.ts  (postalToTown + postalToMk lookups)
+ *   src/lib/server/postal-areas.ts  (postalToTown lookup)
+ *
+ * The region tier is NOT built here: 13eb's value texts name only the
+ * municipality, so the region map this script used to emit was a copy of
+ * the town map, and the tier it fed could never fire. Regions now come
+ * from the classification service in build-rents-areas.mts.
  */
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
@@ -30,16 +35,13 @@ async function main() {
 
 	// valueText format: "00100 Helsinki Keskusta - Etu-Töölö   (Helsinki )"
 	const pcToTown = new Map<string, string>();
-	const pcToMk = new Map<string, string>();
 	for (let i = 0; i < pcDim.values.length; i++) {
 		const pc = pcDim.values[i];
 		const txt = pcDim.valueTexts[i] ?? '';
 		const m = txt.match(/\(([^)]+)\)/g);
 		if (!m || m.length < 1) continue;
 		const town = m[0].replace(/[()]/g, '').trim();
-		const mk = (m[1] ?? m[0]).replace(/[()]/g, '').trim();
 		if (town) pcToTown.set(pc, town);
-		if (mk) pcToMk.set(pc, mk);
 	}
 	console.log(
 		`[build-rents-seed] mappings: ${pcToTown.size} postal -> ${new Set(pcToTown.values()).size} towns`
@@ -122,14 +124,9 @@ async function main() {
 	const tsBody =
 		postcodeHeader +
 		`const TOWN = ${JSON.stringify(Object.fromEntries(pcToTown), null, '\t')} as Record<string, string>;\n` +
-		`const MK = ${JSON.stringify(Object.fromEntries(pcToMk), null, '\t')} as Record<string, string>;\n` +
 		`\n` +
 		`export function postalToTown(pc: string): string | null {\n` +
 		`\treturn TOWN[pc] ?? null;\n` +
-		`}\n` +
-		`\n` +
-		`export function postalToMk(pc: string): string | null {\n` +
-		`\treturn MK[pc] ?? null;\n` +
 		`}\n` +
 		`\n` +
 		`/** Postal codes that have at least one populated cell in rents.seed.json. */\n` +

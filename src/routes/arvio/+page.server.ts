@@ -12,7 +12,7 @@ import {
 	type YieldInputs,
 	type YieldResult
 } from '$lib/server/yield';
-import { estimateRent } from '$lib/server/rents';
+import { estimateRent, type RentEstimate } from '$lib/server/rents';
 import { fetchAreaHistory } from '$lib/server/history';
 import { logQuery } from '$lib/server/supalog';
 import { analyticsDistinctId } from '$lib/server/consent';
@@ -42,13 +42,14 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
 	const facts = parseFacts(url.searchParams);
 	if ('error' in facts) throw error(400, facts.error);
 	const verdict = evaluate(facts);
-	const yieldInput = resolveYieldInputs(url.searchParams, facts);
+	// The estimate travels to the page even when it is what feeds the yield:
+	// its tier and quarter are what tell the reader whether the rent behind a
+	// yield figure is the postal area's own or a region-wide average.
+	const rentEstimate = estimateRent(facts.postalCode, facts.roomsType, facts.livingAreaM2);
+	const yieldInput = resolveYieldInputs(url.searchParams, facts, rentEstimate);
 	const yieldResult: YieldResult | null = yieldInput
 		? computeYield(yieldInput.rent, yieldInput.source)
 		: null;
-	const rentEstimate = yieldInput
-		? null
-		: estimateRent(facts.postalCode, facts.roomsType, facts.livingAreaM2);
 	await logQuery({
 		postal_code: facts.postalCode,
 		rooms_type: facts.roomsType,
@@ -119,7 +120,8 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
  */
 function resolveYieldInputs(
 	params: URLSearchParams,
-	facts: ApartmentFacts
+	facts: ApartmentFacts,
+	estimate: RentEstimate
 ): { rent: YieldInputs; source: RentSource } | null {
 	const userRentRaw = params.get('rent');
 	if (userRentRaw !== null) {
@@ -151,11 +153,10 @@ function resolveYieldInputs(
 			source: 'user'
 		};
 	}
-	const est = estimateRent(facts.postalCode, facts.roomsType, facts.livingAreaM2);
-	if (est.monthlyRentEur === null) return null;
+	if (estimate.monthlyRentEur === null) return null;
 	return {
 		rent: {
-			monthlyRentEur: est.monthlyRentEur,
+			monthlyRentEur: estimate.monthlyRentEur,
 			monthlyVastikeEur: 0,
 			priceEur: facts.priceEur,
 			priceIsDebtFree: facts.priceIsDebtFree,

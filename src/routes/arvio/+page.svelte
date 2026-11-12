@@ -241,6 +241,11 @@
 			<p class="note">{copy.arvio.yield.note}</p>
 			{#if yieldResult.rentSource === 'estimate'}
 				<p class="note">{copy.arvio.yield.rentIsEstimate(rentEstimate?.latestQuarter ?? null)}</p>
+				{#if rentEstimate?.flags?.length}
+					<ul class="flags-list">
+						{#each rentEstimate.flags as f (f)}<li>{f}</li>{/each}
+					</ul>
+				{/if}
 			{/if}
 			{#if yieldResult.flags?.length}
 				<ul class="flags-list">

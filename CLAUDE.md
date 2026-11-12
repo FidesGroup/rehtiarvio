@@ -175,6 +175,24 @@ constraints below were each earned the hard way in one intensive build day
   It writes both `rents.seed.json` and `postal-areas.ts` (the postal→town
   lookup the engine's tier chain uses). Per project convention, regeneration
   scripts now live in `scripts/` rather than the geo repo scratch.
+- **Area rents (asvu 15fa) and the tier chain (2026-11-12).** 13eb is frozen,
+  so the fall-back rungs come from the live **15fa** table (2025=100 rent
+  index + average rents, currently 2026Q3), built by
+  `node --experimental-strip-types scripts/build-rents-areas.mts` into
+  `rents-areas.seed.json` (cells + postal→kunta from Paavo + kunta→maakunta
+  from the classification service). Rerun it quarterly, and after a
+  municipality reclassification. The chain is narrowest-first: **postal**
+  (13eb) → **kunta** (15fa, 27 municipalities) → **town** (13eb synthesized,
+  ~135 towns 15fa does not name) → **mk** (15fa, MK01–MK19). 15fa beats the
+  synthesized town deliberately: it covers a whole municipality, while a town
+  synthesized from published postal cells silently drops every suppressed
+  small area. Coverage goes from ~540 to 2,986 of 3,018 postal codes; the
+  32 misses are Ahvenanmaa, which 15fa does not publish, and they correctly
+  fall through to "type the rent yourself". Because a region-wide average can
+  now drive a displayed yield, `RentEstimate.flags` and `latest_quarter` must
+  stay rendered next to it on both the landing analyzer and /arvio — that
+  disclosure is the rule 4 condition for using the coarse tiers at all.
+  Covered by `rents.test.ts`.
 - `centroids.json` + `static/map-data.geojson` come from Paavo postal-code
   polygons (WFS) joined to the seed; regeneration scripts live in the geo repo
   scratch (`C:/tmp/geo-bench/`) — promote them into `scripts/` here if touched

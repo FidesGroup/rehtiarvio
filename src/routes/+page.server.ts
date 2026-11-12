@@ -279,6 +279,10 @@ export const actions: Actions = {
 			source,
 			reportPayload,
 			yieldResult,
+			// Tier + quarter of the estimated rent behind yieldResult, so the
+			// card can say whether it is the postal area's own figure or a
+			// region-wide average.
+			rentEstimate: rentEst,
 			ownVsRent,
 			quarterRange,
 			shareParams: facts.roomsType ? share.toString() : null,

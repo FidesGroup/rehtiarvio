@@ -464,7 +464,7 @@ export const copy = {
 			{ code: 'Vuokrat', desc: 'Keskivuokrat postinumeroalueittain.' }
 		],
 		dataNote:
-			'Hinnat päivittyvät neljästi vuodessa, aina kun Tilastokeskus julkaisee tuoreet luvut. Käytetyt tilastot (13mt, 13mv, 15is, 15hw, asvu 13eb sekä Paavo-aluetilasto) näet sivun alatunnisteesta ja Kartta-sivun lähdemerkinnöistä.',
+			'Hinnat päivittyvät neljästi vuodessa, aina kun Tilastokeskus julkaisee tuoreet luvut. Käytetyt tilastot (13mt, 13mv, 15is, 15hw, asvu 13eb, asvu 15fa sekä Paavo-aluetilasto) näet sivun alatunnisteesta ja Kartta-sivun lähdemerkinnöistä.',
 		howTitle: 'Näin vertailu toimii',
 		howSteps: [
 			'Liität myynti-ilmoituksen linkin tai tekstin.',
@@ -523,7 +523,8 @@ export const copy = {
 			'Huoneistokoko: pienestä yksiöstä maksetaan yleensä alueen keskiarvoa enemmän per neliö, isosta perheasunnosta vähemmän.',
 			'Alueen sisäinen hajonta: sama postinumeroalue voi sisältää sekä arvokorttelin että lähiön, eikä keskiarvo kuvaa kumpaakaan täydellisesti.',
 			'Salatut solut: Tilastokeskus ei julkaise vähäisten havaintojen soluja (vuokratilastossa raja on 20 havaintoa). Puuttuva arvo ei tarkoita nollaa, emmekä koskaan korvaa salattua arvoa toisella luvulla.',
-			'Vuokratilasto painottuu vapaarahoitteisiin vuokrasuhteisiin, ja yksittäisen asunnon vuokra voi poiketa alueen tilastovuokrasta selvästikin.'
+			'Vuokratilasto painottuu vapaarahoitteisiin vuokrasuhteisiin, ja yksittäisen asunnon vuokra voi poiketa alueen tilastovuokrasta selvästikin.',
+			'Vuokra-arvion tarkkuus vaihtelee alueittain. Postinumeroalueen oma vuokra (asvu 13eb) on tarkin, ja kun sitä ei julkaista, arvio nojaa ensin kuntaan ja viimeisenä koko maakuntaan (asvu 15fa). Mitä laajempi alue, sitä karkeampi luku — arvion vieressä lukee aina, miltä tasolta se tulee ja miltä neljännekseltä.'
 		],
 		coverageTitle: 'Kuinka laajalta löytyy tietoa',
 		coverageCount: (n: number) => `Vertailuhinnat kattavat ${n.toLocaleString('fi-FI')} postinumeroaluetta eri puolilta Suomea.`,
@@ -605,7 +606,7 @@ export const copy = {
 	footer: {
 		brandLine: 'Fides Groupin kehittämä työkalu asuntokaupan markkinahintavertailuun.',
 		dataLine: (n: number) =>
-			`Data: Tilastokeskus 13mt · 13mv · 15is · asvu 13eb · ${n.toLocaleString('fi-FI')} postinumeroaluetta julkaistuin hinnoin · päivittyy neljännesvuosittain.`,
+			`Data: Tilastokeskus 13mt · 13mv · 15is · asvu 13eb · 15fa · ${n.toLocaleString('fi-FI')} postinumeroaluetta julkaistuin hinnoin · päivittyy neljännesvuosittain.`,
 		links: {
 			why: 'Miksi RehtiArvio?',
 			how: 'Miten tämä toimii',
@@ -616,7 +617,7 @@ export const copy = {
 			fides: 'Fides Group'
 		},
 		attribution:
-			'Hinta-aineistot: Tilastokeskus (13mt, 15hw, asvu 13eb, CC BY 4.0). Suuntaa antava seula, ei arviolausunto eikä sijoitusneuvonta.'
+			'Hinta-aineistot: Tilastokeskus (13mt, 15hw, asvu 13eb, asvu 15fa, CC BY 4.0). Suuntaa antava seula, ei arviolausunto eikä sijoitusneuvonta.'
 	},
 
 	consent: {

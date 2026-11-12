@@ -150,7 +150,12 @@
 					<span class="metric__val">{fmt.format(form.yieldResult.reserveEurYr)}<span class="metric__unit">€/v</span></span>
 				</div>
 			</div>
-			<p class="note">{copy.arvio.yield.note} {copy.arvio.yield.rentIsEstimate(null)}</p>
+			<p class="note">{copy.arvio.yield.note} {copy.arvio.yield.rentIsEstimate(form.rentEstimate?.latestQuarter ?? null)}</p>
+			{#if form.rentEstimate?.flags?.length}
+				<ul class="insights rentflags">
+					{#each form.rentEstimate.flags as f (f)}<li>{f}</li>{/each}
+				</ul>
+			{/if}
 		</Card>
 		<Card>
 			{#snippet header()}<h2 class="h">{copy.arvio.ownRent.title} <span class="h__unit">{copy.arvio.ownRent.unit}</span></h2>{/snippet}
@@ -311,6 +316,15 @@
 	.method li::marker {
 		color: var(--ink-3);
 		font-weight: 600;
+	}
+
+	.rentflags {
+		margin: 0.6rem 0 0;
+	}
+
+	.rentflags li {
+		font-size: var(--text-xs);
+		color: var(--ink-3);
 	}
 
 	.rentrow {
